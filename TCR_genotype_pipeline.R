@@ -26,16 +26,20 @@ germline_db_V <- "/<path_to_germline_databases>/<TRBV_database_name>"
 germline_db_D <- "/<path_to_germline_databases>/<TRBD_database_name>"
 germline_db_J <- "/<path_to_germline_databases>/<TRBJ_database_name>"
 
-# in
+# In case of necessity for loading IgBlast environment before run IgBlast, 
+# you should write the command of loading the environment at the beggining with ';' follow after it.
+#For example:
 load_ig_environment <- "export IGDATA=/home/bcrlab/eitan/data/igblast/; nice -19"
+# Otherwise:
+load_ig_environment <- "nice -19"
 
 # the path for makeblastdb tool
 makeblastdb_path <- "/<Path_to_makeblastdb>/makeblastdb"
 
 # the paths of the fasta files which conatins the germline reference in IMGT format.
-TRBV_imgt_ref <- "/<path_to the_ger>/<TRBV>.fasta"
-TRBD_imgt_ref <- "/<path_to the_ger>/<TRBD>.fasta"
-TRBJ_imgt_ref <- "/<path_to the_ger>/<TRBJ>.fasta"
+TRBV_imgt_ref <- "/<path_to_the_germline>/<TRBV>.fasta"
+TRBD_imgt_ref <- "/<path_to_the_germline>/<TRBD>.fasta"
+TRBJ_imgt_ref <- "/<path_to_the_germline>/<TRBJ>.fasta"
 
 
 ####################################################################################################################
@@ -47,8 +51,10 @@ option_list = list(
               help="fasta file name", metavar="character"),
   make_option(c("-s", "--sample"), type="character", default=NULL, 
               help="reference file name", metavar="character"),
-  make_option(c("-p", "--path"), type="character", default="/localdata/aviv/genotypes", 
-              help="output path folder", metavar="character"))
+  make_option(c("-p", "--path"), type="character", default=NULL, 
+              help="output path folder", metavar="character"),
+  make_option(c("-c", "--constcount"), type="integer", default=1, 
+              help="The minimal CONSTCOUNT value to filter by for the genotype inferring.",metavar="number"))
 
 opt_parser = OptionParser(option_list=option_list);
 opt = parse_args(opt_parser);
@@ -63,17 +69,11 @@ if (is.null(opt$sample)){
   stop("sample must be supplied", call.=FALSE)
 }
 
-
-if (!(tolower(opt$sequence_type) %in% c("full", "bio", "adapt"))){
-  print_help(opt_parser)
-  stop("sequence_type must be (full\ bio \ adapt)", call.=FALSE)
-}
-
-
 igblast_input <- opt$file
 SAMP <- opt$sample
 output_path <- opt$path
 sequencing_length <- tolower(opt$sequence_type)
+MIN_CONSTCOUNT <- opt$constcount
 
 ####################################################################################################################
 ##################################### PARAMETERS ###################################################################
@@ -159,7 +159,7 @@ system(paste(load_ig_environment, igblastn_path,"-germline_db_V", germline_db_V,
 
 print("RUNNING MAKEDB ON THE FIRST IGBLAST OUTPUT")
 makedb_output <- paste0(makedb_out_dir, SAMP, ".tab")
-system(paste(load_makedb_env, makedb_com, "-i", igblast_output, "-s", igblast_input, '-r', tcrb_repo, "-o", makedb_output))
+system(paste(makedb_com, "-i", igblast_output, "-s", igblast_input, '-r', tcrb_repo, "-o", makedb_output))
 
 
 ####################################################################################################################
@@ -220,7 +220,7 @@ print("RUNNING IGBLAST WITH PERSONAL REFERENCE")
 pathname = paste0(output_path,"/", SAMP)
 igblast_input <- paste0(pathname, "/", SAMP, ".fasta")
 igblast_output <- paste0(pathname,"/igblast_novel.out")
-system(paste(load_ig_environment, igblastn_path, "-germline_db_V ", personal_novel_germline_db_V, 
+system(paste(load_ig_environment, igblastn_path, "-germline_db_V", personal_novel_germline_db_V, 
              "-germline_db_D", germline_db_D, "-germline_db_J", germline_db_J, 
              igblast_constant_args, "-query", igblast_input, "-out", igblast_output))
 
@@ -234,12 +234,14 @@ write.fasta(sequences = as.list(c(TRBV_GERM, TRBJ_GERM)), names = c(names(TRBV_G
 print("RUNNING MAKEDB ON THE 2ND IGBLAST OUTPUT")
 
 makedb_output <- paste0(sample_path, SAMP, "_novel.tab")
-system(paste(load_makedb_env, makedb_com, "-i",  igblast_output, "-s", igblast_input, "-r", novel_repo, "-o", makedb_output))
+system(paste( makedb_com, "-i",  igblast_output, "-s", igblast_input, "-r", novel_repo, "-o", makedb_output))
 
 ####################################################################################################################
 ########################################## GENOTYPE INFERRING ######################################################
 ####################################################################################################################
 DATA <- read.delim(makedb_output, header=T, sep = "\t", stringsAsFactors = F)
+# filter by the selected minimal constcount.
+DATA <- DATA[DATA$CONSCOUNT >= MIN_CONSTCOUNT,]
 
 DATA_V_SA <- DATA[!grepl(pattern = ',',DATA$V_CALL),]
 geno_H <- inferGenotypeBayesian(DATA_V_SA, germline_db = TRBV_GERM, find_unmutated = TRUE,
@@ -337,13 +339,13 @@ system(paste(makeblastdb_path, '-parse_seqids -dbtype nucl -in', j_personal_ref,
 
 print("RUNNING IGBLAST ON THE PERSONAL REFERENCE")
 system(paste(load_ig_environment, igblastn_path, "-germline_db_V", personal_db_V, 
-             "-germline_db_J ",personal_db_J, "-germline_db_D", personal_db_D, 
+             "-germline_db_J", personal_db_J, "-germline_db_D", personal_db_D, 
              igblast_constant_args, "-query", igblast_input, "-out", personal_igblast_output))
 
 
 print("RUNNING MAKEDB ON THE PERSONAL REFERENCE")
 write.fasta(sequences = as.list(c(TRBV_GERM.NEW,TRBJ_GERM.NEW)),names = c(names(TRBV_GERM.NEW), names(TRBJ_GERM.NEW)), persona_repo, open="w")
 personal_makedb_output <- paste0(sample_path, SAMP, "_genotyped.tab")
-system(paste(load_makedb_env, makedb_com, "-i", personal_igblast_output, 
-             "-s", igblast_input, '-r', persona_repo, "-o", personal_makedb_output))
+system(paste( makedb_com, "-i", personal_igblast_output, 
+              "-s", igblast_input, '-r', persona_repo, "-o", personal_makedb_output))
 
