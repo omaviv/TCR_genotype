@@ -218,7 +218,6 @@ system(paste(makeblastdb_path,'-parse_seqids -dbtype nucl',
 ### Realign using personal reference and IgBlast
 print("RUNNING IGBLAST WITH PERSONAL REFERENCE")
 pathname = paste0(output_path,"/", SAMP)
-igblast_input <- paste0(pathname, "/", SAMP, ".fasta")
 igblast_output <- paste0(pathname,"/igblast_novel.out")
 system(paste(load_ig_environment, igblastn_path, "-germline_db_V", personal_novel_germline_db_V, 
              "-germline_db_D", germline_db_D, "-germline_db_J", germline_db_J, 
@@ -241,6 +240,11 @@ system(paste( makedb_com, "-i",  igblast_output, "-s", igblast_input, "-r", nove
 ####################################################################################################################
 DATA <- read.delim(makedb_output, header=T, sep = "\t", stringsAsFactors = F)
 # filter by the selected minimal constcount.
+
+if (!"CONSCOUNT" %in% names(DATA)) {
+  DATA$CONSCOUNT <- 1
+}
+
 DATA <- DATA[DATA$CONSCOUNT >= MIN_CONSTCOUNT,]
 
 DATA_V_SA <- DATA[!grepl(pattern = ',',DATA$V_CALL),]
