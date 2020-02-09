@@ -6,7 +6,7 @@
 3. MakeDb tool
 4. R and the following R packages: seqinr, tigger, optparse, gtools, ggplot2, stringr, dplyr, data.table, alakazam, and reshape2
 5. The fasta file refernces of the 3 segments: TRBV, TRBD, and TRBJ in IMGT format (gapped sequences).
-6. Blast datanases for germline TRBV, TRBD, and TRBJ sequences as describde over IgBlast set up: https://ncbi.github.io/igblast/cook/How-to-set-up.html
+6. Blast databases for germline TRBV, TRBD, and TRBJ sequences as describde over IgBlast set up: https://ncbi.github.io/igblast/cook/How-to-set-up.html
 
 ## Initialize
 Before running the pipeline one has to initialize the parameters at the beginning of the code "PARAMETERS TO INTIAL BEFORE FIRST RUN" (The first section after the libraries).
