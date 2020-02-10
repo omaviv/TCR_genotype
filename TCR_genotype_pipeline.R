@@ -182,6 +182,25 @@ if(nrow(novel_df_H)!=0) {
   new_novel_df_H <- novel_df_H
 }
 
+# Handling "novel alleles" which are actually known alleles with missing ends.
+if(nrow(novel_df_H)) { 
+  rows_to_remove <- c()
+  for (i in 1:nrow(novel_df_H)) {
+    gene <- unlist(str_split(novel_df_H$GERMLINE_CALL[[i]], "[*]"))[1]
+    ALLELES <- TRBV_GERM[grepl(gene, names(TRBV_GERM))]
+    for (j in 1:length(ALLELES)) {
+      temp <- novel_df_H[grepl(ALLELES[[j]], novel_df_H$NOVEL_IMGT),]
+      if (nrow(temp)) {
+        TRBV_GERM[names(ALLELES[j])] <- temp$NOVEL_IMGT[[1]]
+        rows_to_remove <- c(unlist(rows_to_remove), i)
+      }
+    }
+  }
+  if (length(rows_to_remove)) {
+    novel_df_H <- novel_df_H[-rows_to_remove,]
+  }
+}
+
 ## ADD novel alleles to the genotype database
 novel_genotype <- new_novel_df_H$NOVEL_IMGT
 novel_genotype <- sapply(novel_genotype,function(x){gsub('-','.',x,fixed = T)})
