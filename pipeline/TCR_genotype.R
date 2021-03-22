@@ -19,7 +19,7 @@ initial.options <- commandArgs(trailingOnly = FALSE)
 file.arg.name <- "--file="
 script.name <- sub(file.arg.name, "", initial.options[grep(file.arg.name, initial.options)])
 script.dirname <- dirname(script.name)
-script.dirname <- ifelse(grepl(getwd(),script.dirname), script.dirname, paste0(getwd(), "/",script.dirname))
+script.dirname <- ifelse(substr(script.dirname,1,1)=="/", script.dirname, paste0(getwd(), "/",script.dirname))
 
 
 load(paste0(script.dirname,"/sysdata.rda"))
