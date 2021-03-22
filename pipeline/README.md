@@ -14,8 +14,13 @@ The parameter are described at the same section.
 
 ## How to run the script
 The command for runnig the script with the essential flags is:
-nice -19 Rscript <ptah_to_the_script>/TCR_genotype_pipeline_test.R -f <fasta_file> -s <Sample_name> -p <output_dir>
+nice -19 Rscript <ptah_to_the_script>/TCR_genotype_pipeline_test.R -f <fasta_file> -s <Sample_name> -p <output_dir> -t <sequencing_type>
 "output_dir" - in which directory to store all the data
+"sequencing_type" - the sequencing approach that used for sequencing the same data-set 
+  "full" - full length sequencing (5' RACE)
+  "sc" - Single cell sequencing (also full length)
+  "bio" - Sequencing by using BIOMED-2 primeres
+  "adapt" - Sequenced by Adaptive Biotechnologies
 
 Another optional flag is: "-c <CONSCOUNT>" - Only sequences with atleast the CONSCOUNT value would include to infer the genotype. The default is 1.  
 
