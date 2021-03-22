@@ -23,8 +23,8 @@ script.dirname <- ifelse(substr(script.dirname,1,1)=="/", script.dirname, paste0
 
 
 load(paste0(script.dirname,"/sysdata.rda"))
-source(paste0(script.dirname,"haplotype/createFullHaplotype.R"))
-source(paste0(script.dirname,"haplotype/internal_functions.R"))
+source(paste0(script.dirname,"/haplotype/createFullHaplotype.R"))
+source(paste0(script.dirname,"/haplotype/internal_functions.R"))
 # source(paste0(script.dirname,"TIgGER/internal_functions.R"))
 
 ####################################################################################################################
