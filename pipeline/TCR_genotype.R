@@ -261,8 +261,6 @@ if (grepl("|", names(TRBJ_GERM), fixed = T)[1]){
   names(TRBJ_GERM) <- sapply(strsplit(names(TRBJ_GERM),"|",fixed = T),"[",2) 
 }
 TRBJ_GERM <- toupper(unlist(TRBJ_GERM))
-print(TRBJ_GERM)
-quit()
 # write the reference sequences into the "REPO" file for MakeDB.
 write.fasta(sequences = as.list(c(TRBV_GERM, TRBJ_GERM)), names = c(names(TRBV_GERM), names(TRBJ_GERM)),
             tcrb_repo, open="w")
