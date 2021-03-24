@@ -648,10 +648,10 @@ if (!"consensus_count" %in% names(DATA)) {
     DATA$consensus_count <- 1
     DATA$duplicate_count <- 1
   }
+} else{
+  DATA$duplicate_count[!unlist(lapply(DATA$duplicate_count, is.integer))] <- 1
+  DATA$consensus_count[!unlist(lapply(DATA$consensus_count, is.integer))] <- DATA$duplicate_count[!unlist(lapply(DATA$consensus_count, is.integer))]
 }
-
-DATA$duplicate_count[!unlist(lapply(DATA$duplicate_count, is.integer))] <- 1
-DATA$consensus_count[!unlist(lapply(DATA$consensus_count, is.integer))] <- DATA$duplicate_count[!unlist(lapply(DATA$consensus_count, is.integer))]
 
 
 DATA <- DATA %>% select(sequence, sequence_alignment, sequence_id,  consensus_count, duplicate_count)
