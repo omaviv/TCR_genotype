@@ -261,7 +261,8 @@ if (grepl("|", names(TRBJ_GERM), fixed = T)[1]){
   names(TRBJ_GERM) <- sapply(strsplit(names(TRBJ_GERM),"|",fixed = T),"[",2) 
 }
 TRBJ_GERM <- toupper(unlist(TRBJ_GERM))
-
+print(TRBJ_GERM)
+quit()
 # write the reference sequences into the "REPO" file for MakeDB.
 write.fasta(sequences = as.list(c(TRBV_GERM, TRBJ_GERM)), names = c(names(TRBV_GERM), names(TRBJ_GERM)),
             tcrb_repo, open="w")
@@ -274,15 +275,15 @@ print("FIRST IGBLAST RUNNING")
 
 pathname = paste0(output_path,"/", SAMP)
 igblast_output <- paste0(output_path, "/igblast/",SAMP,".fmt7")
-# igblast command
-system(paste(load_ig_environment, igblastn_path,"-germline_db_V", germline_db_V,
-             "-germline_db_D", germline_db_D, "-germline_db_J", germline_db_J, igblast_constant_args,
-             "-query", igblast_input, "-out", igblast_output,
-             "-num_alignments_V 1", "-num_alignments_D 1", "-num_alignments_J 1"))
-
-print("RUNNING MAKEDB ON THE FIRST IGBLAST OUTPUT")
 makedb_output <- paste0(makedb_out_dir, SAMP, ".tab")
-system(paste(makedb_com, "-i", igblast_output, "-s", igblast_input, '-r', tcrb_repo, "-o", makedb_output))
+
+# system(paste(load_ig_environment, igblastn_path,"-germline_db_V", germline_db_V,
+#              "-germline_db_D", germline_db_D, "-germline_db_J", germline_db_J, igblast_constant_args,
+#              "-query", igblast_input, "-out", igblast_output,
+#              "-num_alignments_V 1", "-num_alignments_D 1", "-num_alignments_J 1"))
+# 
+# print("RUNNING MAKEDB ON THE FIRST IGBLAST OUTPUT")
+# system(paste(makedb_com, "-i", igblast_output, "-s", igblast_input, '-r', tcrb_repo, "-o", makedb_output))
 
 ############################################## READ DATA ####################################################################
 
@@ -354,23 +355,23 @@ file.copy(TRBV_ref, paste0(output_path,"/", SAMP,"/database/V.fasta"), overwrite
 file.copy(TRBD_ref, paste0(output_path,"/", SAMP,"/database/D.fasta"), overwrite = T)
 file.copy(TRBJ_ref, paste0(output_path,"/", SAMP,"/database/J.fasta"), overwrite = T)
 
-system(paste0(igdiscover_env," && cd ",pathname,"; ",
-              paste0('igdiscover igblast --threads 1 --no-cache',
-                     ' --pathig ', igblast_output,
-                     ' database ', igblast_input,
-                     " > ", SAMP, "_igdiscover-pass.tab")))
+# system(paste0(igdiscover_env," && cd ",pathname,"; ",
+#               paste0('igdiscover igblast --threads 1 --no-cache',
+#                      ' --pathig ', igblast_output,
+#                      ' database ', igblast_input,
+#                      " > ", SAMP, "_igdiscover-pass.tab")))
 
 data_igdiscover <- read.delim(paste0(SAMP, "_igdiscover-pass.tab"), sep = '\t', header = T, stringsAsFactors = F)
 data_igdiscover$sequence_id <- sapply(data_igdiscover$name, function(x) strsplit(x,"|",fixed=T)[[1]][1])
 data_igdiscover <- data_igdiscover[data_igdiscover$sequence_id %in% DATA$sequence_id,]
 
-write.table(data_igdiscover, paste0(SAMP, "_igdiscover-pass_mut.tab"), sep = "\t")
-
-system(paste0(igdiscover_env," && cd ",pathname,"; ",
-              paste0('igdiscover discover --threads ', num_of_threads,
-                     ' --consensus-threshold 50 --database database/V.fasta ',
-                     ' -o ./ ',SAMP,'_igdiscover-pass_mut.tab',
-                     " > ", SAMP, "_candidates_igdiscover.tab")))
+# write.table(data_igdiscover, paste0(SAMP, "_igdiscover-pass_mut.tab"), sep = "\t")
+# 
+# system(paste0(igdiscover_env," && cd ",pathname,"; ",
+#               paste0('igdiscover discover --threads ', num_of_threads,
+#                      ' --consensus-threshold 50 --database database/V.fasta ',
+#                      ' -o ./ ',SAMP,'_igdiscover-pass_mut.tab',
+#                      " > ", SAMP, "_candidates_igdiscover.tab")))
 
 novel_igdiscover <- read.delim(paste0(SAMP, "_candidates_igdiscover.tab"), sep = '\t', header = T, stringsAsFactors = F)
 
@@ -632,59 +633,59 @@ write.fasta(sequences=as.list(gsub(TRBV_GERM, pattern = '.', replacement = '', f
 ## Write the VDJ sequences to realign
 print("Collape identical VDJ sequences")
 
-if (!"consensus_count" %in% names(DATA)) {
-  if ("reads" %in% names(DATA)) {
-    if ("templates" %in% names(DATA)) {
-      DATA$templates[!unlist(lapply(DATA$templates, is.integer))] <- 1
-      DATA$reads[!unlist(lapply(DATA$reads, is.integer))] <- DATA$templates[!unlist(lapply(DATA$reads, is.integer))]
-    } else {
-      DATA$reads[!unlist(lapply(DATA$reads, is.integer))] <- 1
-      DATA$templates <- 1
-    }
-    DATA$consensus_count <- DATA$reads
-    DATA$duplicate_count <- DATA$templates
-  }
-  else {
-    DATA$consensus_count <- 1
-    DATA$duplicate_count <- 1
-  }
-} else{
-  DATA$duplicate_count[!unlist(lapply(DATA$duplicate_count, is.integer))] <- 1
-  DATA$consensus_count[!unlist(lapply(DATA$consensus_count, is.integer))] <- DATA$duplicate_count[!unlist(lapply(DATA$consensus_count, is.integer))]
-}
-
-
-DATA <- DATA %>% select(sequence, sequence_alignment, sequence_id,  consensus_count, duplicate_count)
-DATA$sequence_alignment <- gsub(".", "", DATA$sequence_alignment, fixed = T)
-
-vdj_seqs <- unique(DATA$sequence_alignment)
-for (vdj_seq in vdj_seqs) {
-  vdj_indexes <- which(DATA$sequence_alignment==vdj_seq)
-  if (length(vdj_indexes) > 1) {
-    temp <- DATA[vdj_indexes,]
-    temp$consensus_count <- as.numeric(temp$consensus_count)
-    temp$duplicate_count <- as.numeric(temp$duplicate_count)
-    
-    DATA <- DATA[-vdj_indexes,]
-    
-    seq_id_ind <- which.max(temp$consensus_count);
-    seq_id <- temp$sequence_id[seq_id_ind]
-    seq_id_ind <- vdj_indexes[seq_id_ind]
-    sequence <- temp$sequence[seq_id_ind]
-    
-    conscount <- sum(temp$consensus_count)
-    dupcount <- sum(temp$duplicate_count)
-    DATA[nrow(DATA)+1,] <- c(sequence, vdj_seq, seq_id, conscount, dupcount)
-  }
-}
-
-seq.names <- sapply(1:nrow(DATA),function(x){ paste0(names(DATA)[3:ncol(DATA)],
-                                                     rep('=',length(3:ncol(DATA))),
-                                                     DATA[x,3:ncol(DATA)],
-                                                     collapse = '|')})
-seq.names <- gsub('sequence_id=','',seq.names,fixed = T)
-
-write.fasta(sequences=as.list(DATA$sequence), names=seq.names, novel_igblast_input, open="w")
+# if (!"consensus_count" %in% names(DATA)) {
+#   if ("reads" %in% names(DATA)) {
+#     if ("templates" %in% names(DATA)) {
+#       DATA$templates[!unlist(lapply(DATA$templates, is.integer))] <- 1
+#       DATA$reads[!unlist(lapply(DATA$reads, is.integer))] <- DATA$templates[!unlist(lapply(DATA$reads, is.integer))]
+#     } else {
+#       DATA$reads[!unlist(lapply(DATA$reads, is.integer))] <- 1
+#       DATA$templates <- 1
+#     }
+#     DATA$consensus_count <- DATA$reads
+#     DATA$duplicate_count <- DATA$templates
+#   }
+#   else {
+#     DATA$consensus_count <- 1
+#     DATA$duplicate_count <- 1
+#   }
+# } else{
+#   DATA$duplicate_count[!unlist(lapply(DATA$duplicate_count, is.integer))] <- 1
+#   DATA$consensus_count[!unlist(lapply(DATA$consensus_count, is.integer))] <- DATA$duplicate_count[!unlist(lapply(DATA$consensus_count, is.integer))]
+# }
+# 
+# 
+# DATA <- DATA %>% select(sequence, sequence_alignment, sequence_id,  consensus_count, duplicate_count)
+# DATA$sequence_alignment <- gsub(".", "", DATA$sequence_alignment, fixed = T)
+# 
+# vdj_seqs <- unique(DATA$sequence_alignment)
+# for (vdj_seq in vdj_seqs) {
+#   vdj_indexes <- which(DATA$sequence_alignment==vdj_seq)
+#   if (length(vdj_indexes) > 1) {
+#     temp <- DATA[vdj_indexes,]
+#     temp$consensus_count <- as.numeric(temp$consensus_count)
+#     temp$duplicate_count <- as.numeric(temp$duplicate_count)
+#     
+#     DATA <- DATA[-vdj_indexes,]
+#     
+#     seq_id_ind <- which.max(temp$consensus_count);
+#     seq_id <- temp$sequence_id[seq_id_ind]
+#     seq_id_ind <- vdj_indexes[seq_id_ind]
+#     sequence <- temp$sequence[seq_id_ind]
+#     
+#     conscount <- sum(temp$consensus_count)
+#     dupcount <- sum(temp$duplicate_count)
+#     DATA[nrow(DATA)+1,] <- c(sequence, vdj_seq, seq_id, conscount, dupcount)
+#   }
+# }
+# 
+# seq.names <- sapply(1:nrow(DATA),function(x){ paste0(names(DATA)[3:ncol(DATA)],
+#                                                      rep('=',length(3:ncol(DATA))),
+#                                                      DATA[x,3:ncol(DATA)],
+#                                                      collapse = '|')})
+# seq.names <- gsub('sequence_id=','',seq.names,fixed = T)
+# 
+# write.fasta(sequences=as.list(DATA$sequence), names=seq.names, novel_igblast_input, open="w")
 ################################## Create a personal reference database file using blast - makeblastdb ###########
 pathname <- paste0(output_path, "/", SAMP)
 print("CREATING A REFERENCE DATABASE WITH FOUND NOVEL ALLELES")
