@@ -96,7 +96,7 @@ biomed_TRBJ_imgt_ref <- paste0(script.dirname,"/fasta_references/TRBJ.fasta")
 biomed_TRBJ_ref <- paste0(script.dirname,"/fasta_references/TRBJ_ref.fasta")
 
 adaptive_germline_db_J <- paste0(script.dirname,"/igblast_ref/Adaptive_TRBJ_ref")
-adaptive_TRBJ_imgt_ref <- paste0(script.dirname,"/fasta_references/Adaptive_TRBV.fasta")
+adaptive_TRBJ_imgt_ref <- paste0(script.dirname,"/fasta_references/Adaptive_TRBJ.fasta")
 adaptive_TRBJ_ref <- paste0(script.dirname,"/fasta_references/Adaptive_TRBJ_ref.fasta")
 
 # Gene usage data frame for deletion detection
