@@ -69,7 +69,7 @@ sc_germline_db_V <- paste0(script.dirname,"/igblast_ref/TRV_ref")
 sc_TRBV_imgt_ref <- paste0(script.dirname,"/fasta_references/TRV.fasta")
 sc_TRBV_ref <- paste0(script.dirname,"/fasta_references/TRV_ref.fasta")
 
-biomed_germline_db_V <- paste0(script.dirname,"/igblast_ref/Biomed2_TRBV_ref")
+biomed_germline_db_V <- paste0(script.dirname,"/igblast_ref/BIOMED2_TRBV_ref")
 biomed_TRBV_imgt_ref <- paste0(script.dirname,"/fasta_references/BIOMED2_TRBV.fasta")
 biomed_TRBV_ref <- paste0(script.dirname,"/fasta_references/BIOMED2_TRBV_ref.fasta")
 
