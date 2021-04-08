@@ -25,15 +25,15 @@ subjects_with_del <- genes_usage[!is.na(genes_usage$col)& genes_usage$col=="Dele
 
 
 TRBV6_23_FREQ <- genes_usage[genes_usage$GENE=="TRBV6-23",]
-TRBV6_23_FREQ$GROUP <- "Carry  of V4-3 and V3-2"
-TRBV6_23_FREQ[TRBV6_23_FREQ$SUBJECT %in% subjects_with_del,"GROUP"] <- "V4-3 and V3-2 are deleted on"
+TRBV6_23_FREQ$GROUP <- "Carry at least \n one copy of TRBV4-3"
+TRBV6_23_FREQ[TRBV6_23_FREQ$SUBJECT %in% subjects_with_del,"GROUP"] <- "Carry a double chromosome \n deletion of TRBV4-3"
 
 
 p <- ggplot(TRBV6_23_FREQ, aes(x = GROUP, y = FREQ)) +  
   geom_boxplot(alpha = 0.80, fill=NA) +
   # geom_point(aes(colour = factor(HAPLO)), size = 1) + 
   geom_point(aes(colour = factor(GROUP)), size = 1) + 
-  ggtitle("V6-2/V6-3") + xlab("Individual groups") + ylab("V6-2/V6-3 Usage") +
+  ggtitle("TRBV6-2/V6-3") + xlab("Individual groups") + ylab("TRBV6-2/V6-3 Usage") +
   theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(), 
         panel.background = element_blank(), axis.line = element_line(colour = "black"),
         plot.title = element_text(hjust = 0.5), legend.position = "none")

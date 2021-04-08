@@ -130,10 +130,10 @@ temp <- merge(temp, total_per_s, by = "subject")
 
 temp$freq <- temp$N / temp$TOTAL
 
-v623_graph <- ggplot(temp, aes(x=subject, y=freq, fill=gsub("TRB", "", allele))) + 
+v623_graph <- ggplot(temp, aes(x=subject, y=freq, fill=gsub("TRBV6-23*", "", allele, fixed = T))) + 
   geom_bar(stat="identity", colour="white") + 
   scale_y_continuous(expand = c(0, 0))+
-  ylab("Frequency") + labs(fill="Allele") +
+  ylab("Frequency") + labs(fill="TRBV6-2/TRBV6-3 allele") +
   theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(), 
         panel.background = element_blank(), axis.line = element_line(colour = "black"),
         text = element_text(size=16), axis.text = element_text(size = 14))
@@ -148,13 +148,13 @@ HCV_GENO_TRBV72 <- HCV_GENO_TRBV72 %>% select(SUBJECT, ALLELES, COUNTS, TOTAL) %
 HCV_GENO_TRBV72$FREQ <- as.numeric(HCV_GENO_TRBV72$COUNTS) / HCV_GENO_TRBV72$TOTAL
 
 HCV_GENO_TRBV72 <- HCV_GENO_TRBV72[HCV_GENO_TRBV72$ALLELES == "01" | HCV_GENO_TRBV72$ALLELES == "02",]
-HCV_GENO_TRBV72$ALLELES <- paste0("V7-2*",HCV_GENO_TRBV72$ALLELES)
+# HCV_GENO_TRBV72$ALLELES <- paste0("V7-2*",HCV_GENO_TRBV72$ALLELES)
 
 V72_graph <- ggplot(HCV_GENO_TRBV72, aes(x=SUBJECT, y=FREQ, fill=ALLELES)) + 
   geom_bar(stat="identity", colour="white") + 
   scale_fill_hue(l=40, c=35) +
   scale_y_continuous(expand = c(0, 0))+
-  ylab("Frequency") + labs(fill="Allele") + xlab("Individual") +
+  ylab("Frequency") + labs(fill="TRBV7-2 allele") + xlab("Individual") +
   theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(), 
         panel.background = element_blank(), axis.line = element_line(colour = "black"),
         text = element_text(size=16), axis.text = element_text(size = 14),
@@ -177,11 +177,11 @@ v623_leg <-get_legend(v623_graph)
 v72_leg <-get_legend(V72_graph)
 
 V72_graph <- V72_graph + theme(legend.position="none")
-v623_graph <- v623_graph + theme(legend.position="none", axis.title.x = element_blank(), axis.text.x = element_blank()) 
+v623_graph <- v623_graph + theme(legend.position="none", axis.title.x = element_blank(), axis.text.x = element_blank())
 
 
 g <- grid.arrange(v623_graph, v623_leg, V72_graph, v72_leg,
-             widths = c(0.9, 0.1),
+             widths = c(0.8, 0.2),
              heights = c(1, 1.2),
              layout_matrix = rbind(c(1, 2),
                                    c(3, 4)))

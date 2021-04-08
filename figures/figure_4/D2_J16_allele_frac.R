@@ -47,7 +47,7 @@ summary(HCV_GENO_TRBD2$TOTAL)
 
 hcv_d2_error_graph <- ggplot(HCV_GENO_TRBD2, aes(x=FREQ_01)) + 
   geom_histogram(breaks = seq(0, 1, by = 0.025), colour="black", fill="darkgrey") +
-  xlab("D2*01 fraction") + ylab("Number of individuals")+
+  xlab("TRBD2*01 fraction") + ylab("Number of individuals")+
   theme_classic() + 
   theme(axis.text.y = element_text(angle = 90, hjust = 0.5))
 
@@ -97,7 +97,7 @@ D2_02_HOMO_HETERO_BOUND <- (mean(D2_02_HOMO_FREQ)*sd(D2_HETERO_FREQ) + mean(D2_H
 adapt_d2_error_graph <- ggplot(Adaptive_GENO_TRBD2, aes(x=FREQ_01)) + 
   geom_histogram(breaks = seq(0, 1, by = 0.025), colour="black", fill="grey") +
   geom_vline(xintercept=c(D2_02_HOMO_HETERO_BOUND, D2_01_HOMO_HETERO_BOUND)) +
-  xlab("D2*01 fraction") + ylab("Number of individuals")+
+  xlab("TRBD2*01 fraction") + ylab("Number of individuals")+
   theme_classic() + 
   theme(axis.text.y = element_text(angle = 90, hjust = 0.5))
 
@@ -152,7 +152,7 @@ biomed_d2_error_graph <- ggplot(BIOMED2_GENO_TRBD2, aes(x=FREQ_01)) +
   geom_histogram(breaks = seq(0, 1, by = 0.025), colour="black", fill="darkgrey") +
   geom_vline(xintercept=c(D2_02_HOMO_HETERO_BOUND, D2_01_HOMO_HETERO_BOUND)) +
   geom_vline(xintercept=c(D2_HOMO02_BOUND, D2_HETERO_1_BOUND, D2_HETERO_2_BOUND, D2_HOMO01_BOUND), linetype='dashed') +
-  xlab("D2*01 fraction") + ylab("Number of individuals")+
+  xlab("TRBD2*01 fraction") + ylab("Number of individuals")+
   theme_classic() + 
   theme(axis.text.y = element_text(angle = 90, hjust = 0.5))
 
@@ -192,7 +192,7 @@ summary(BIOMED2_GENO_TRBJ1_6$TOTAL)
 
 biomed_j1_6_graph <- ggplot(BIOMED2_GENO_TRBJ1_6, aes(x=FREQ_01)) + 
   geom_histogram(breaks = seq(0, 1, by = 0.025), colour="black", fill="darkgrey") +
-  xlab("J1-6*01 fraction") + ylab("Number of individuals")+
+  xlab("TRBJ1-6*01 fraction") + ylab("Number of individuals")+
   theme_classic()
 
 biomed_j1_6_graph

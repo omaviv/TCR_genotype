@@ -72,7 +72,7 @@ temp <- allele_relations[allele_relations$GENE.x==gene1 & allele_relations$GENE.
 allele_relation_graph <- ggplot(temp, aes(x = GENOTYPE.x, y = GENOTYPE.y, fill = FREQ)) +
   geom_tile() + scale_fill_continuous(limits=c(0, 1), low = "white", high = "darkgrey") +
   geom_text(aes(label = LABELS)) +
-  xlab("V4-3 genotype") + ylab("V7-2 genotype") +
+  xlab("TRBV4-3 genotype") + ylab("TRBV7-2 genotype") +
   theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(),
         panel.background = element_blank(), axis.line = element_line(colour = "black"),
         axis.text = element_text(size=8), plot.title = element_text(hjust = 0.5))

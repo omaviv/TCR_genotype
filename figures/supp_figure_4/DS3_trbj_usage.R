@@ -41,7 +41,7 @@ ALL_J_GENO$J_FREQ <- ALL_J_GENO$TOTAL / ALL_J_GENO$TOTAL_J_SEQS
 ALL_J_GENO$GENE <- gsub("TRB", "", ALL_J_GENO$GENE)
 biomed_trbj_usage <- ggplot(ALL_J_GENO, aes(x=GENE, y=J_FREQ, fill = J1_6_GENO)) + 
   geom_boxplot() + 
-  ylab("Usage") + xlab("J gene") +
+  ylab("Usage") + xlab("TRBJ gene") +
   theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(), 
         panel.background = element_blank(), axis.line = element_line(colour = "black"),
         axis.text = element_text(size=14), axis.title = element_text(size=18))

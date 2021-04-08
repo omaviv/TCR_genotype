@@ -80,13 +80,13 @@ v_frequencies$GENE <- factor(v_frequencies$GENE, levels = gsub("TRB", "", TRBV_L
 v_usage_graph <- ggplot(v_frequencies, aes(x=GENE, y=FREQ, fill = GENOTYPE)) + 
   geom_boxplot() +  
   # scale_x_discrete(limits=gsub("TRB", "", TRBV_LOC)) + 
-  ylab("Usage") + xlab("") +
-  guides(fill=guide_legend("V7-2 genotype", nrow = 1)) +
+  ylab("Usage") + xlab("TRBV gene") +
+  guides(fill=guide_legend("TRBV7-2 genotype", nrow = 1)) +
   theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(), 
         panel.background = element_blank(), axis.line = element_line(colour = "black"),
         axis.text = element_text(size = 14), axis.title = element_text(size = 18),
         legend.text = element_text(size = 14), legend.title = element_text(size = 18),
-        legend.position=c(0.5,0.8), axis.text.x = element_text(angle = 90, hjust = 1))
+        legend.position=c(0.5,0.8))
 
 
 comperasiments <- list(c("bp01", "bp01-bp02"), c("bp02", "bp01-bp02"), c("bp01", "bp02"))

@@ -78,7 +78,7 @@ d2_usage_graph <- ggplot(d_usage_df, aes(x=gsub("TRB", "", d_gene), y=usage, fil
   geom_boxplot(outlier.size = 0.4) + 
   scale_y_continuous(expand = c(0, 0), limits = c(0, max(d_usage_df$usage) *1.1)) +
   ylab("Usage") + xlab("") +
-  labs(fill="D2 genotype") +
+  labs(fill="TRBD2 genotype") +
   theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(), 
         panel.background = element_blank(), axis.line = element_line(colour = "black"))
 
@@ -97,8 +97,8 @@ trbj_usage$usage <- trbj_usage$N / trbj_usage$total
 trbj_usage_graph <- ggplot(trbj_usage, aes(x=gsub("TRB", "", j_gene), y=usage, fill = d2_geno)) + 
   geom_boxplot(outlier.size = 0.4) + 
   scale_y_continuous(expand = c(0, 0), limits = c(0, max(trbj_usage$usage) *1.1)) +
-  ylab("Usage") + xlab("J gene") +
-  guides(fill=guide_legend("D2 genotype", nrow = 1)) +
+  ylab("Usage") + xlab("TRBJ gene") +
+  guides(fill=guide_legend("TRBD2 genotype", nrow = 1)) +
   theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(), 
         panel.background = element_blank(), axis.line = element_line(colour = "black"),
         legend.position=c(0.5,0.9), axis.text.x=element_text(color=gene_colors))
@@ -145,8 +145,8 @@ p.values <- p.adjust(p.values, method = "bonferroni")
 trbj_family_usage_graph <- ggplot(trbj_family_usage, aes(x=gsub("TRB", "", j_family), y=total_usage, fill = d2_geno)) + 
   geom_boxplot(outlier.size = 0.4) + 
   scale_y_continuous(expand = c(0, 0), limits = c(0, max(trbj_family_usage$total_usage) *1.3)) +
-  ylab("Usage") + xlab("J family") +
-  guides(fill=guide_legend("D2 genotype", nrow = 1)) +
+  ylab("Usage") + xlab("TRBJ family") +
+  guides(fill=guide_legend("TRBD2 genotype", nrow = 1)) +
   theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(), 
         panel.background = element_blank(), axis.line = element_line(colour = "black"),
         legend.position=c(0.5,0.9))
@@ -184,8 +184,8 @@ trbj1_usage <- trbj_usage[grepl("J1", trbj_usage$j_gene),]
 trbj1_usage_graph <- ggplot(trbj1_usage, aes(x=gsub("TRB", "", j_gene), y=norm_usage, fill = d2_geno)) + 
   geom_boxplot(outlier.size = 0.4) + 
   scale_y_continuous(expand = c(0, 0), limits = c(0, max(trbj_usage$norm_usage) *1.1)) +
-  ylab("P(J1-N)") + xlab("J1 gene") +
-  guides(fill=guide_legend("D2 genotype", nrow = 1)) +
+  ylab("P(TRBJ1-N)") + xlab("TRBJ1 gene") +
+  guides(fill=guide_legend("TRBD2 genotype", nrow = 1)) +
   theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(), 
         panel.background = element_blank(), axis.line = element_line(colour = "black"),
         legend.position=c(0.5,0.9))
@@ -204,8 +204,8 @@ trbj2_usage <- trbj_usage[grepl("J2", trbj_usage$j_gene),]
 trbj2_usage_graph <- ggplot(trbj2_usage, aes(x=gsub("TRB", "", j_gene), y=norm_usage, fill = d2_geno)) + 
   geom_boxplot(outlier.size = 0.4) + 
   scale_y_continuous(expand = c(0, 0), limits = c(0, max(trbj_usage$norm_usage) *1.1)) +
-  ylab("P(J2-N)") + xlab("J2 gene") +
-  guides(fill=guide_legend("D2 genotype", nrow = 1)) +
+  ylab("P(TRBJ2-N)") + xlab("TRBJ2 gene") +
+  guides(fill=guide_legend("TRBD2 genotype", nrow = 1)) +
   theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(), 
         panel.background = element_blank(), axis.line = element_line(colour = "black"),
         legend.position=c(0.5,0.9))
@@ -246,8 +246,8 @@ d2_j2_pairing <- d2_j2_pairing[!grepl(",|P", d2_j2_pairing$j_gene),]
 d2_j2_pairing_graph <- ggplot(d2_j2_pairing, aes(x=j_gene, y=frac)) + 
   geom_boxplot(aes(fill=d2_geno))+
   scale_y_continuous(expand = c(0, 0), limits = c(0, max(d2_j2_pairing$frac) *1.1)) +
-  xlab("J2 gene") + ylab("P(J2-N|D2)") + 
-  guides(fill=guide_legend("D2 genotype")) +
+  xlab("TRBJ2 gene") + ylab("P(TRBJ2-N|TRBD2)") + 
+  guides(fill=guide_legend("TRBD2 genotype")) +
   theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(), 
         panel.background = element_blank(), axis.line = element_line(colour = "black"))
 
@@ -282,8 +282,8 @@ d1_j_fam_pairing <- d1_j_fam_pairing[!grepl(",", d1_j_fam_pairing$j_family),]
 d1_j_fam_pairing_graph <- ggplot(d1_j_fam_pairing, aes(x=gsub("TRB", "", j_family), y=frac)) + 
   geom_boxplot(aes(fill=d2_geno))+
   scale_y_continuous(expand = c(0, 0), limits = c(0, max(d1_j_fam_pairing$frac) *1.1)) +
-  xlab("J family") + ylab("P(J|D1)") + 
-  guides(fill=guide_legend("D2 genotype")) +
+  xlab("TRBJ family") + ylab("P(TRBJ|TRBD1)") + 
+  guides(fill=guide_legend("TRBD2 genotype")) +
   theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(), 
         panel.background = element_blank(), axis.line = element_line(colour = "black"))
 
@@ -316,8 +316,8 @@ d1_j_pairing <- d1_j_pairing[!grepl(",|P", d1_j_pairing$j_gene),]
 d1_j_pairing_graph <- ggplot(d1_j_pairing, aes(x=j_gene, y=frac)) + 
   geom_boxplot(aes(fill=d2_geno))+
   scale_y_continuous(expand = c(0, 0), limits = c(0, max(d1_j_pairing$frac) *1.1)) +
-  guides(fill=guide_legend("D2 genotype")) +
-  xlab("J gene") + ylab("P(J1/2-N|D1)") + 
+  guides(fill=guide_legend("TRBD2 genotype")) +
+  xlab("TRBJ gene") + ylab("P(TRBJ1/2-N|TRBD1)") + 
   theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(), 
         panel.background = element_blank(), axis.line = element_line(colour = "black"), 
         axis.text.x=element_text(color=gene_colors))
@@ -350,9 +350,9 @@ d1_j2_pairing <- d1_j2_pairing[!grepl(",|P", d1_j2_pairing$j_gene),]
 
 d1_j2_pairing_graph <- ggplot(d1_j2_pairing[!grepl(",", d1_j2_pairing$j_gene),], aes(x=j_gene, y=frac)) + 
   geom_boxplot(aes(fill=d2_geno))+
-  xlab("J2 gene") + ylab("P(J2-N|D1)") + 
+  xlab("TRBJ2 gene") + ylab("P(TRBJ2-N|TRBD1)") + 
   scale_y_continuous(expand = c(0, 0), limits = c(0, max(d1_j2_pairing$frac) *1.1)) +
-  guides(fill=guide_legend("D2 genotype")) +
+  guides(fill=guide_legend("TRBD2 genotype")) +
   theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(), 
         panel.background = element_blank(), axis.line = element_line(colour = "black"))
 
@@ -375,7 +375,7 @@ d1_j2_pairing_graph <- d1_j2_pairing_graph + geom_signif(y_position = y.values, 
 
 d2_usage_graph <- d2_usage_graph  + theme(legend.position="none", axis.title.x = element_blank())
 trbj_usage_graph <- trbj_usage_graph + theme(legend.position="none", axis.title.y = element_blank(), axis.title.x = element_blank())
-trbdj_usage_graph <- arrangeGrob(d2_usage_graph, trbj_usage_graph, bottom = "Gene", widths = c(0.25,0.75), 
+trbdj_usage_graph <- arrangeGrob(d2_usage_graph, trbj_usage_graph, bottom = "TRB gene", widths = c(0.25,0.75), 
                                  ncol=2, top = set_title("a."))
 
 trbj_family_usage_graph <- trbj_family_usage_graph + theme(legend.position="none")
@@ -383,7 +383,7 @@ trbj_family_usage_graph <- arrangeGrob(trbj_family_usage_graph, top = set_title(
 
 trbj1_usage_graph <- trbj1_usage_graph + theme(legend.position="none", axis.title.x = element_blank())
 trbj2_usage_graph <- trbj2_usage_graph + theme(legend.position="none", axis.text.y = element_blank(), axis.title.x = element_blank())
-trbj_norm_usage_graph <- arrangeGrob(trbj1_usage_graph, trbj2_usage_graph, bottom = "J gene", widths = c(0.63, 0.67), ncol=2, top = set_title("c."))
+trbj_norm_usage_graph <- arrangeGrob(trbj1_usage_graph, trbj2_usage_graph, bottom = "TRBJ gene", widths = c(0.63, 0.67), ncol=2, top = set_title("c."))
 
 
 d2_j2_pairing_graph <- d2_j2_pairing_graph + theme(legend.position="none")

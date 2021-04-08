@@ -36,7 +36,45 @@ novel_compare_df <- read.delim(paste0(required_files_folder, "full_length_undocu
 biomed_novel_df <- read.delim(paste0(required_files_folder, "bp_undocumented_alleles.tsv"), header = T, sep = "\t", stringsAsFactors = F)
 adaptive_novel_df <- read.delim(paste0(required_files_folder, "ap_undocumented_alleles.tsv"), header = T, sep = "\t", stringsAsFactors = F)
 
+# Change the names of the collapsed genes
+# TRBV6-23 > TRBV6-2/TRBV6-3
+GENE.loc[["TRB"]] <- gsub("TRBV6-23", "TRBV6-2/TRBV6-3", GENE.loc[["TRB"]])
+hcv_genotypes$GENE <- gsub("TRBV6-23", "TRBV6-2/TRBV6-3", hcv_genotypes$GENE)
+sc_genotypes$GENE <- gsub("TRBV6-23", "TRBV6-2/TRBV6-3", sc_genotypes$GENE)
+biomed_genotypes$GENE <- gsub("TRBV6-23", "TRBV6-2/TRBV6-3", biomed_genotypes$GENE)
+adaptive_genotypes$GENE <- gsub("TRBV6-23", "TRBV6-2/TRBV6-3", adaptive_genotypes$GENE)
+full_novel_appearance_df$novel_allele <- gsub("TRBV6-23", "TRBV6-2/TRBV6-3", full_novel_appearance_df$novel_allele)
+names(TRBV_GERM) <- gsub("TRBV6-23", "TRBV6-2/TRBV6-3", names(TRBV_GERM))
+names(full_trbv) <- gsub("TRBV6-23", "TRBV6-2/TRBV6-3", names(full_trbv))
+names(biomed_trbv) <- gsub("TRBV6-23", "TRBV6-2/TRBV6-3", names(biomed_trbv))
+names(adaptive_trbv) <- gsub("TRBV6-23", "TRBV6-2/TRBV6-3", names(adaptive_trbv))
+novel_compare_df$FULL_ALLELE_NAME <- gsub("TRBV6-23", "TRBV6-2/TRBV6-3", novel_compare_df$FULL_ALLELE_NAME)
+biomed_novel_df$FULL_ALLELE_NAME <- gsub("TRBV6-23", "TRBV6-2/TRBV6-3", biomed_novel_df$FULL_ALLELE_NAME)
+adaptive_novel_df$FULL_ALLELE_NAME <- gsub("TRBV6-23", "TRBV6-2/TRBV6-3", adaptive_novel_df$FULL_ALLELE_NAME)
+
+# TRBV12-34 > TRBV12-3/TRBV12-4
+GENE.loc[["TRB"]] <- gsub("TRBV12-34", "TRBV12-3/TRBV12-4", GENE.loc[["TRB"]])
+biomed_genotypes$GENE <- gsub("TRBV12-34", "TRBV12-3/TRBV12-4", biomed_genotypes$GENE)
+adaptive_genotypes$GENE <- gsub("TRBV12-34", "TRBV12-3/TRBV12-4", adaptive_genotypes$GENE)
+names(biomed_trbv) <- gsub("TRBV12-34", "TRBV12-3/TRBV12-4", names(biomed_trbv))
+names(adaptive_trbv) <- gsub("TRBV12-34", "TRBV12-3/TRBV12-4", names(adaptive_trbv))
+biomed_novel_df$FULL_ALLELE_NAME <- gsub("TRBV12-34", "TRBV12-3/TRBV12-4", biomed_novel_df$FULL_ALLELE_NAME)
+adaptive_novel_df$FULL_ALLELE_NAME <- gsub("TRBV12-34", "TRBV12-3/TRBV12-4", adaptive_novel_df$FULL_ALLELE_NAME)
+
+# TRBV3-12 > TRBV3-1/TRBV3-2
+GENE.loc[["TRB"]] <- gsub("TRBV3-12", "TRBV3-1/TRBV3-2", GENE.loc[["TRB"]])
+adaptive_genotypes$GENE <- gsub("TRBV3-12", "TRBV3-1/TRBV3-2", adaptive_genotypes$GENE)
+names(adaptive_trbv) <- gsub("TRBV3-12", "TRBV3-1/TRBV3-2", names(adaptive_trbv))
+adaptive_novel_df$FULL_ALLELE_NAME <- gsub("TRBV3-12", "TRBV3-1/TRBV3-2", adaptive_novel_df$FULL_ALLELE_NAME)
+
+# TRBV6-56 > TRBV6-5/TRBV6-6
+GENE.loc[["TRB"]] <- gsub("TRBV6-56", "TRBV6-5/TRBV6-6", GENE.loc[["TRB"]])
+adaptive_genotypes$GENE <- gsub("TRBV6-56", "TRBV6-5/TRBV6-6", adaptive_genotypes$GENE)
+names(adaptive_trbv) <- gsub("TRBV6-56", "TRBV6-5/TRBV6-6", names(adaptive_trbv))
+adaptive_novel_df$FULL_ALLELE_NAME <- gsub("TRBV6-56", "TRBV6-5/TRBV6-6", adaptive_novel_df$FULL_ALLELE_NAME)
+
 ########################################################################################################################
+
 
 # remove repeated reads, potential sequencing error
 Repeated_Read <- function(x,seq){
@@ -383,7 +421,7 @@ full_gene_allele_num_plot <- ggplot(data=full_trbv[order(full_trbv$allele_number
   geom_bar(width = 0.8, stat="identity", color="black", position=position_dodge())+
   scale_y_continuous(expand = c(0, 0)) +
   scale_fill_manual(values=c("darkred", "firebrick3", "cyan4")) + 
-  xlab("V Genes") + ylab("Number of alleles") + ggtitle("DS1 & DS2") + 
+  xlab("TRBV Genes") + ylab("Number of alleles") + ggtitle("DS1 & DS2") + 
   guides(fill=guide_legend("", nrow = 1)) +
   theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(), 
         panel.background = element_blank(), axis.line = element_line(colour = "black"),
@@ -452,7 +490,7 @@ biomed_gene_allele_num_plot <- ggplot(data=biomed_trbv[order(biomed_trbv$allele_
   geom_bar(width = 0.8, stat="identity", color="black", position=position_dodge())+
   scale_y_continuous(expand = c(0, 0)) +
   scale_fill_manual(values=c("darkred", "firebrick3", "cyan4")) + 
-  xlab("V Genes") + ylab("Number of alleles") + ggtitle("DS3") + 
+  xlab("TRBV Genes") + ylab("Number of alleles") + ggtitle("DS3") + 
   guides(fill=guide_legend("", nrow = 1)) +
   theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(), 
         panel.background = element_blank(), axis.line = element_line(colour = "black"),
@@ -517,7 +555,7 @@ adaptive_gene_allele_num_plot <- ggplot(data=adaptive_trbv[order(adaptive_trbv$a
   geom_bar(width = 0.8, stat="identity", color="black", position=position_dodge())+
   scale_y_continuous(expand = c(0, 0)) +
   scale_fill_manual(values=c("darkred", "firebrick3", "cyan4")) + 
-  xlab("V Genes") + ylab("Number of alleles") + ggtitle("DS4") + 
+  xlab("TRBV Genes") + ylab("Number of alleles") + ggtitle("DS4") + 
   guides(fill=guide_legend("", nrow = 1)) +
   theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(), 
         panel.background = element_blank(), axis.line = element_line(colour = "black"),
@@ -567,7 +605,7 @@ biomed_gene_allele_num_plot <- biomed_gene_allele_num_plot + theme(axis.title.y 
 adaptive_gene_allele_num_plot <- adaptive_gene_allele_num_plot + theme(axis.title.y = element_blank(), legend.position = "none")
 
 gene_allele_num_plot <- grid.arrange(full_gene_allele_num_plot, biomed_gene_allele_num_plot, adaptive_gene_allele_num_plot, ncol=1, heights=c(1,1,1.4))
-gene_allele_num_plot <- arrangeGrob(gene_allele_num_plot, top = b_label, left = "Number of Alleles", bottom = "V genes")
+gene_allele_num_plot <- arrangeGrob(gene_allele_num_plot, top = b_label, left = "Number of Alleles", bottom = "TRBV genes")
 gene_allele_num_plot <- grid.arrange(gene_allele_num_plot, gene_allele_num_leg, ncol=1, heights=c(10, 1))
 
 g <- grid.arrange(

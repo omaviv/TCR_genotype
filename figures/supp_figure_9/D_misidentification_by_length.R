@@ -61,7 +61,7 @@ d_usage_by_len$d_gene <- gsub("TRB", "", d_usage_by_len$d_gene)
 
 d_usage_by_len_graph <- ggplot(d_usage_by_len[d_usage_by_len$d_len <= 12,], aes(x=as.factor(d_len), y=fraction)) + 
   geom_boxplot(aes(fill = factor(d_gene))) +
-  xlab("D length") + ylab("Fraction") + labs(fill="Assignments") + 
+  xlab("TRBD length") + ylab("Fraction") + labs(fill="Assignments") + 
   scale_y_continuous(expand = c(0, 0)) +
   theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(), 
         panel.background = element_blank(), axis.line = element_line(colour = "black"))
@@ -116,8 +116,8 @@ d2_j1_pairing <- d2_j1_pairing %>% group_by(subject, d_gene, d_len, d2_geno) %>%
 
 d2_j1_pairing_graph <- ggplot(d2_j1_pairing, aes(x=as.factor(d_len), y=pair_frac)) + 
   geom_boxplot(aes(fill=d2_geno))+
-  xlab("D length") + ylab("P(J1|D2)") + 
-  guides(fill=guide_legend("D2 genotype")) +
+  xlab("TRBD length") + ylab("P(JTRB1|TRBD2)") + 
+  guides(fill=guide_legend("TRBD2 genotype")) +
   scale_y_continuous(expand = c(0, 0)) +
   theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(), 
         panel.background = element_blank(), axis.line = element_line(colour = "black"))

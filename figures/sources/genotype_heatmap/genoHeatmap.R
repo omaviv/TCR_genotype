@@ -64,8 +64,12 @@ genoHeatmap <- function(geno_table, chain = c("IGH", "IGK", "IGL", "TRB", "TRA")
   # sort the data, remove pseudo and orf if needed
   geno_db <- sortDFByGene(DATA = geno_db, chain = chain, method = gene_sort, removeIGH = removeIGH, geno = T,
                           peseudo_remove = pseudo_genes, ORF_remove = ORF_genes)
+  if (removeIGH) {
+    geno_db$GENE <- factor(geno_db$GENE, levels = gsub("IG[H|K|L]|TR[B|A]", "", GENE.loc[[chain]]))
+  } else {
+    geno_db$GENE <- factor(geno_db$GENE, levels = GENE.loc[[chain]])
+  }
   
-  geno_db$GENE <- factor(geno_db$GENE, levels = gsub("IG[H|K|L]|TR[B|A]", "", GENE.loc[[chain]]))
   
   # rename genes to numbers
   gene_loc <- 1:length(unique(geno_db$GENE)[order(match(unique(geno_db$GENE), levels(geno_db$GENE)))])
@@ -212,8 +216,8 @@ genoHeatmap <- function(geno_table, chain = c("IGH", "IGK", "IGL", "TRB", "TRA")
   grid(lwd=1,nx = genes_n,ny=0,col = "white",lty = 1)
   grid(lwd=1,nx = 0,ny=samples_n,col = "black",lty = 1)
   # add axis annotations
-  axis(3,(0:(genes_n-1))/genes_n+6/(12*genes_n),names(gene_loc),las=3, cex.axis=2.5) # top
-  axis(1,(0:(genes_n-1))/genes_n+6/(12*genes_n),names(gene_loc),las=3, cex.axis=2.5) # bottom
+  axis(3,(0:(genes_n-1))/genes_n+6/(12*genes_n),names(gene_loc),las=3, cex.axis=1.5) # top
+  axis(1,(0:(genes_n-1))/genes_n+6/(12*genes_n),names(gene_loc),las=3, cex.axis=1.5) # bottom
   
   # color y tick labels if supplied
   colors <- "black"

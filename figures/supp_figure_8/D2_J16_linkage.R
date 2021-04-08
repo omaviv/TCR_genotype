@@ -113,7 +113,7 @@ BIOMED2_TRBJ1_6_TRBD2$LABELS <- paste0(BIOMED2_TRBJ1_6_TRBD2$COUNT, "\n(", round
 biomed2_j16_d2_relation_graph <- ggplot(BIOMED2_TRBJ1_6_TRBD2, aes(x = D2_GENO, y = J1_6_GENO, fill = FREQ)) +
   geom_tile() + scale_fill_continuous(limits=c(0, 1), low = "white", high = "darkgrey") +
   geom_text(aes(label = LABELS)) +
-  xlab("D2 Genotype") + ylab("J1-6 Genotype") + labs(fill="Intersection\nfrequency") +
+  xlab("TRBD2 Genotype") + ylab("TRBJ1-6 Genotype") + labs(fill="Intersection\nfrequency") +
   theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(), 
         panel.background = element_blank(), axis.line = element_line(colour = "black"),
         axis.text = element_text(size=8))
