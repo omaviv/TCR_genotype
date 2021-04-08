@@ -17,6 +17,11 @@ load(paste0(project_folder, "pipeline/sysdata.rda"))
 TRBD2_GENO <- read.delim(paste0(required_files_folder, "HCV_Genotypes_const_2.tab"), header = T, sep = "\t", stringsAsFactors = F)
 v_frequencies <- read.csv(paste0(required_files_folder, "HCV_DELETIONS.tab"), sep = "\t", stringsAsFactors = F)
 
+# Change the names of the collapsed genes
+# TRBV6-23 > TRBV6-2/TRBV6-3
+GENE.loc[["TRB"]] <- gsub("TRBV6-23", "TRBV6-2/V6-3", GENE.loc[["TRB"]])
+v_frequencies$GENE <- gsub("TRBV6-23", "TRBV6-2/V6-3", v_frequencies$GENE)
+
 ######################################## TRBD2 genotype 
 TRBD2_GENO <- TRBD2_GENO[TRBD2_GENO$GENE == "TRBD2",]
 
@@ -111,11 +116,11 @@ dj_usage_graph <- ggplot(ALL_DJ_GENO, aes(x = GENE, y = FREQ)) +
   # scale_color_hue(l=40, c=35) +
   scale_x_discrete(limits=TRBDJ_LOCUS) + scale_y_continuous(expand = c(0, 0)) +
   # labs(color="Gene group") +
-  labs(color="D2 geno") +
+  labs(color="TRBD2\ngenotype") +
   ylab("Usage") +
   theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(), 
         panel.background = element_blank(), axis.line = element_line(colour = "black"),
-        text = element_text(size=30), axis.text.x = element_text(angle = 90, hjust = 1),
+        text = element_text(size=28), axis.text.x = element_text(angle = 90, hjust = 1),
         axis.text.y = element_text(size = 28), legend.position=c(0.8,0.85))
 
 

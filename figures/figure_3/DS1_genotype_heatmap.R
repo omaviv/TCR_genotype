@@ -28,8 +28,8 @@ genotypes <- read.delim(paste0(required_files_folder, "HCV_Genotypes_filtered.ta
 
 # Change the names of the collapsed genes
 # TRBV6-23 > TRBV6-2/TRBV6-3
-GENE.loc[["TRB"]] <- gsub("TRBV6-23", "TRBV6-2/TRBV6-3", GENE.loc[["TRB"]])
-genotypes$GENE <- gsub("TRBV6-23", "TRBV6-2/TRBV6-3", genotypes$GENE)
+GENE.loc[["TRB"]] <- gsub("TRBV6-23", "TRBV6-2/6-3", GENE.loc[["TRB"]])
+genotypes$GENE <- gsub("TRBV6-23", "TRBV6-2/6-3", genotypes$GENE)
 
 ##########################################################################################################################
 ############################ Genrate genotype heatmaps ###################################################################
