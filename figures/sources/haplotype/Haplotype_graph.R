@@ -472,7 +472,11 @@ hapHeatmap <- function(hap_table, chain = c("IGH", "IGK", "IGL", "TRB"), gene_so
   
   # sort the data
   panels <- sortDFByGene(hap_table, chain = chain, method = gene_sort, removeIGH = removeIGH, geno = T, peseudo_remove = T)
-  panels$GENE <- factor(panels$GENE, levels = gsub(chain, "", GENE.loc[[chain]]))
+  if (removeIGH) {  
+    panels$GENE <- factor(panels$GENE, levels = gsub(chain, "", GENE.loc[[chain]]))
+  } else {
+    panels$GENE <- factor(panels$GENE, levels = GENE.loc[[chain]])
+  }
   # rename genes to numbers
   gene_loc <- 1:length(unique(panels$GENE)[order(match(unique(panels$GENE), levels(panels$GENE)))])
   names(gene_loc) <- unique(panels$GENE)[order(match(unique(panels$GENE), levels(panels$GENE)))]

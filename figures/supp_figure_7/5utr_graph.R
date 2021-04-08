@@ -21,6 +21,12 @@ references_folder <- paste0(project_folder, "pipeline/fasta_references/")
 upstream_v_seqs_df <- read.delim(paste0(required_files_folder, "5UTR_unfilter_seqs.tab"), header = T, sep = "\t", stringsAsFactors = F)
 TRBV_LEADER <- read.fasta(paste0(required_files_folder, "TRBV_leader.fasta"),as.string = TRUE)
 
+# Change the names of the collapsed genes
+# TRBV6-23 > TRBV6-2/TRBV6-3
+upstream_v_seqs_df$GENE <- gsub("TRBV6-23", "TRBV6-2/TRBV6-3", upstream_v_seqs_df$GENE)
+upstream_v_seqs_df$ALLELE <- gsub("TRBV6-23", "TRBV6-2/TRBV6-3", upstream_v_seqs_df$ALLELE)
+names(TRBV_LEADER) <- gsub("TRBV6-23", "TRBV6-2/TRBV6-3", names(TRBV_LEADER))
+
 #####################################################################################################################
 ###########################  Figure  ################################################################################
 #####################################################################################################################
@@ -127,7 +133,7 @@ for (pos in 9:23) {
 
 UTR.db.flt.mlt.rev$NT <- factor(UTR.db.flt.mlt.rev$NT,levels=c('A','C','G','T','N','gap'))
 
-UTR.db.flt.mlt.rev$ALLELE <- gsub("TRB", "", UTR.db.flt.mlt.rev$ALLELE)
+# UTR.db.flt.mlt.rev$ALLELE <- gsub("TRB", "", UTR.db.flt.mlt.rev$ALLELE)
 UTR.db.flt.mlt.rev$ALLELE <- factor(UTR.db.flt.mlt.rev$ALLELE, levels=sort(unique(UTR.db.flt.mlt.rev$ALLELE), decreasing = TRUE))
 
 FAM.COL <- c('TRBV1'='red','TRBV2'='blue','TRBV3'='darkgreen','TRBV4'='purple','TRBV5'='orange','TRBV6'='cyan','TRBV7'='black')

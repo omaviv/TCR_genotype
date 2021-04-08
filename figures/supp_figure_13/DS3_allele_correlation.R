@@ -78,4 +78,4 @@ allele_relation_graph <- ggplot(temp, aes(x = GENOTYPE.x, y = GENOTYPE.y, fill =
         axis.text = element_text(size=8), plot.title = element_text(hjust = 0.5))
 
 
-ggsave(paste0(figure_folder, "BIOMED_allele_relations.pdf"), allele_relation_graph, width = 10, height = 9, limitsize = F)
+ggsave(paste0(figure_folder, "TRBV4-3_TRBV7-2_allele_relations.pdf"), allele_relation_graph, width = 10, height = 9, limitsize = F)
