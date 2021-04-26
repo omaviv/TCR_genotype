@@ -26,6 +26,11 @@ source(paste0(sources_folder, "genotype_heatmap/genoHeatmap.R"))
 # load DS1 genotypes after filtering unreliable unknown alleles
 genotypes <- read.delim(paste0(required_files_folder, "Single_cell_TR_filtered_Genotypes.tab"), sep = "\t", stringsAsFactors = F)
 
+# Change the names of the collapsed genes
+# TRBV6-23 > TRBV6-2/TRBV6-3
+GENE.loc[["TRB"]] <- gsub("TRBV6-23", "TRBV6-2/TRBV6-3", GENE.loc[["TRB"]])
+genotypes$GENE <- gsub("TRBV6-23", "TRBV6-2/TRBV6-3", genotypes$GENE)
+
 ##########################################################################################################################
 ############################ Genrate genotype heatmaps ###################################################################
 ##########################################################################################################################
@@ -85,7 +90,7 @@ genotypes$SUBJECT <- factor(genotypes$SUBJECT, levels=subject_order)
 genotypes <- genotypes[order(genotypes$SUBJECT),]
 
 
-genotype_heatmap <- genoHeatmap(geno_table = genotypes, chain = "TRB", lk_cutoff = 3, pseudo_genes = T, ORF_genes = F)
+genotype_heatmap <- genoHeatmap(geno_table = genotypes, chain = "TRB", lk_cutoff = 3, pseudo_genes = T, ORF_genes = F, removeIGH = F)
 
 pdf(file = paste0(figure_folder, "DS2_genotype.pdf"), height = 10, width = genotype_heatmap$width)
 print(genotype_heatmap$p)
