@@ -483,11 +483,11 @@ if(nrow(novel_igdiscover)>0){
       else {
         cutted_allele_seq <- substr(ALLELES[[j]], 1, max_snp_position)
         cutted_allele_seq <- gsub(".", "", cutted_allele_seq, fixed = T)
-        cutted_allele_seq <- substr(cutted_allele_seq, 5, length(cutted_allele_seq))
+        cutted_allele_seq <- substr(cutted_allele_seq, 5, str_length(cutted_allele_seq))
         
         cutted_novel <- substr(novel_imgt_seq, 1, max_snp_position)
         cutted_novel <- gsub(".", "", cutted_novel, fixed = T)
-        cutted_novel <- substr(cutted_novel, 5, length(cutted_novel))
+        cutted_novel <- substr(cutted_novel, 5, str_length(cutted_novel))
         if(cutted_allele_seq == cutted_novel) {
           rows2remove <- c(unlist(rows2remove), i)
           novel_igdiscover$NOTE[i] <- paste0(novel_igdiscover$NOTE[i],"Identical to known allele;")
@@ -539,7 +539,7 @@ if (filter_chimera) {
         mismatches_counter <- c(0)
         for (pos in 2:max_snp_position) {
           mismatches_counter[pos] <- mismatches_counter[pos-1]
-          if (pos > min(length(novel_allele_seq), length(known_allele_seq))) {
+          if (pos > min(str_length(novel_allele_seq), str_length(known_allele_seq))) {
             next
           }
           if ((novel_allele_seq[[pos]] != ".") & (known_allele_seq[[pos]] != ".") & (novel_allele_seq[[pos]] != known_allele_seq[[pos]])) {
@@ -749,7 +749,7 @@ if (filter_chimera) {
         mismatches_counter <- c(0)
         for (pos in 2:max_snp_position) {
           mismatches_counter[pos] <- mismatches_counter[pos-1]
-          if (pos > min(length(novel_seq), length(allele_seq))) {
+          if (pos > min(str_length(novel_seq), str_length(allele_seq))) {
             next
           }
           if ((novel_seq[[pos]] != ".") & (allele_seq[[pos]] != ".") & (novel_seq[[pos]] != allele_seq[[pos]])) {
