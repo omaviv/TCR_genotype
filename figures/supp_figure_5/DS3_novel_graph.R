@@ -124,7 +124,8 @@ novel_checks$padded <- ifelse(grepl("R", novel_checks$SNP_XXXX), T, F)
 
 print("Check unary model")
 novel_checks$unary <- unlist(lapply(unique_novel_alleles, function(allele) { 
-  (max(novel_appearance_df$allele_freq[novel_appearance_df$novel_allele==allele & !is.na(novel_appearance_df$allele_freq)]) < 0.15) & (nrow(novel_appearance_df[novel_appearance_df$allele_freq >0,]) > 2)
+  (max(novel_appearance_df$allele_freq[novel_appearance_df$novel_allele==allele & !is.na(novel_appearance_df$allele_freq) & novel_appearance_df$carry != "Not carry"]) < 0.2) & 
+    (nrow(novel_appearance_df[novel_appearance_df$allele_freq >0,]) > 2)
 }))
 novel_checks$both <- novel_checks$padded & novel_checks$unary
 

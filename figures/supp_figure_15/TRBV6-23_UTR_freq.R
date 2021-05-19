@@ -21,7 +21,7 @@ figure_folder <- paste0(project_folder, "figures/supp_figure_15/")
 
 DATA <- read.delim(paste0(required_files_folder, "TRBV6_23_merged_makedb.tab"), header = T, sep = "\t", stringsAsFactors = F)
 upstream_v_seqs_df <- read.delim(paste0(required_files_folder, "5UTR_unfilter_seqs.tab"), header = T, sep = "\t", stringsAsFactors = F)
-TRBV_LEADER <- read.delim(paste0(required_files_folder, "TRBV_leader.fasta"), header = T, sep = "\t", stringsAsFactors = F)
+TRBV_LEADER <- read.fasta(paste0(required_files_folder, "TRBV_leader.fasta"), as.string = TRUE)
 HCV_ALL_GENO <- read.delim(paste0(required_files_folder, "HCV_Genotypes_const_2.tab"), header = T, sep = "\t", stringsAsFactors = F)
 
 

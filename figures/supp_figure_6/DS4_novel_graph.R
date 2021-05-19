@@ -23,6 +23,7 @@ genotypes <- read.delim(paste0(required_files_folder, "Adaptive_All_Genotypes.ta
 novel_appearance_df <- read.delim(paste0(required_files_folder, "DS4_all_novel_occurrences.tab"), header = T, sep = "\t", stringsAsFactors = F)
 TRBV_imgt_ref <- paste0(references_folder, "Adaptive_TRBV.fasta")
 
+extra_red_alleles <- c("TRBV7-4*ap01_G291C_A297G", "TRBV7-4*ap01_G291C_A297G_C314T", "TRBV7-9*ap01_G313T")
 #####################################################################################################################
 ###########################  Figure  ################################################################################
 #####################################################################################################################
@@ -136,7 +137,8 @@ novel_checks$padded <- ifelse(grepl("R", novel_checks$SNP_XXXX), T, F)
 
 print("Check unary model")
 novel_checks$unary <- unlist(lapply(unique_novel_alleles, function(allele) { 
-  (max(novel_appearance_df$allele_freq[novel_appearance_df$novel_allele==allele & !is.na(novel_appearance_df$allele_freq)]) < 0.15) & (nrow(novel_appearance_df[novel_appearance_df$allele_freq >0,]) > 2)
+  (max(novel_appearance_df$allele_freq[novel_appearance_df$novel_allele==allele & !is.na(novel_appearance_df$allele_freq) & novel_appearance_df$carry != "Not carry"]) < 0.2) & 
+    (nrow(novel_appearance_df[novel_appearance_df$allele_freq >0,]) > 2)
 }))
 novel_checks$both <- novel_checks$padded & novel_checks$unary
 
@@ -294,7 +296,7 @@ colors <- unlist(lapply(high_freq_allele_order, function(allele) {
     return("navy")
   } else if (novel_checks$padded[novel_checks$ALLELE==allele]) {
     return("green4")
-  } else if (novel_checks$unary[novel_checks$ALLELE==allele]) {
+  } else if ((novel_checks$unary[novel_checks$ALLELE==allele]) | (allele %in% extra_red_alleles)) {
     return("red")
   }
   return("black")

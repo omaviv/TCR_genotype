@@ -74,7 +74,11 @@ UTR.db.flt$as_germ <- unlist(lapply(1:nrow(UTR.db.flt), function(i){
   allele <- sapply(strsplit(UTR.db.flt$ALLELE[[i]],"_",fixed = T),"[",1);
   if (!allele %in% names(TRBV_LEADER)) {return(FALSE)}
   allele_seq <- stri_reverse(TRBV_LEADER[[allele]]);
-  return(grepl(allele_seq, UTR.db.flt$CONS[[i]], fixed = T))
+  if (str_length(UTR.db.flt$CONS[[i]]) >= str_length(allele_seq)){
+    return(grepl(allele_seq, UTR.db.flt$CONS[[i]], fixed = T))
+  } else {
+    return(grepl(UTR.db.flt$CONS[[i]], allele_seq, fixed = T))
+  }
 }))
 
 UTR.db.flt <- UTR.db.flt[order(UTR.db.flt$ALLELE, -UTR.db.flt$as_germ),]
