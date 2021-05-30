@@ -1066,8 +1066,8 @@ write.table(geno, file = paste0(genotypes_path, SAMP, "_genotype.tsv"),quote = F
 ############################################# Haplotype Inference ##################################################
 ####################################################################################################################
 
-hetero_j16 <- grepl(",", geno$GENOTYPED_ALLELES[geno$GENE == "TRBJ1-6"])
-hetero_d2 <- grepl(",", geno$GENOTYPED_ALLELES[geno$GENE == "TRBD2"])
+hetero_j16 <- grepl(",", geno$GENOTYPED_ALLELES[geno$gene == "TRBJ1-6"])
+hetero_d2 <- grepl(",", geno$GENOTYPED_ALLELES[geno$gene == "TRBD2"])
 
 if (!((hetero_j16) | (hetero_d2))) {
   quit()
@@ -1084,7 +1084,7 @@ v_seqs <- sapply(1:nrow(DATA),function(x) substr(DATA$sequence_alignment[x],1,DA
 DATA$v_mut <- unlist(tigger::getMutCount(v_seqs, DATA$v_call, germline_db = TRBV_GERM))
 DATA <- DATA[DATA$v_mut <= 1,]
 
-del_genes <- geno$GENE[grepl("Del", geno$GENOTYPED_ALLELES)]
+del_genes <- geno$gene[grepl("Del", geno$GENOTYPED_ALLELES)]
 
 if (hetero_j16) {
   # Only rearrangments with single assignment of TRBJ1-6
