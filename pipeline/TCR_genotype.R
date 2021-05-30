@@ -38,7 +38,11 @@ num_of_threads <- 44
 max_snp_position <- 316
 
 # undocumented_alleles_2_ignore <- c()
-undocumented_alleles_2_ignore <- c("TRBV13*01_A170T", "TRBV13*01_T158C", "TRBV10-3*02_C225G", "TRBV20-1*01_C142A", "TRBV30*01_A113C", "TRBV6-6*01_C261T","TRBV7-9*05_A19G_C256T")
+undocumented_alleles_2_ignore <- c("TRBV13*01_A170T", "TRBV13*01_T158C", "TRBV10-3*02_C225G", "TRBV20-1*01_C142A", "TRBV30*01_A113C", "TRBV6-6*01_C261T",
+                                   "TRBV7-9*05_A19G_C256T",
+                                   "TRBV15*bp02_A316C", "TRBV5-4*bp01_C159T", "TRBV6-6*bp03_G216C", "TRBV6-6*bp03_T201C_A202C_G216C", "TRBV6-6*bp03_T231C_C261T",
+                                   "TRBV15*bp02_G153T", "TRBV19*bp01_T310C_G311C_C314T", "TRBV5-4*bp01_G205A", "TRBV5-5*bp01_G232A", 
+                                   "TRBV20-1*ap02_T310G", "TRBV7-8*ap01_T295C", "TRBV7-4*ap01_G291C_A297G", "TRBV7-4*ap01_G291C_A297G_C314T", "TRBV7-9*ap01_G313T")
 
 ######################## Environment & tools 
 # In case of necessity for loading IgBlast environment before run IgBlast, 
@@ -726,7 +730,7 @@ DATA_V_SA <- DATA_V_SA[!DATA_V_SA$v_call %in% undocumented_alleles_2_ignore,]
 
 geno_BV <- inferGenotypeBayesian(DATA_V_SA, germline_db = TRBV_GERM, find_unmutated = FALSE,
                                  novel = new_novel_df_H,v_call = 'v_call')
-names(geno_BV) <- toupper(names(geno_BV))
+names(geno_BV) <- names(geno_BV)
 geno_BV$GENOTYPED_ALLELES <-apply(geno_BV[,c(2,6:9)],1,function(y){m <- which.max(as.numeric(y[2:5]));paste0(unlist(strsplit((y[1]),','))[1:m],collapse=",")})
 
 if (filter_chimera) {
@@ -801,7 +805,6 @@ if (filter_chimera) {
       DATA_V_SA <- DATA_V_SA[!DATA_V_SA$v_call %in% prob_chimera,]
       geno_BV <- inferGenotypeBayesian(DATA_V_SA, germline_db = TRBV_GERM, find_unmutated = FALSE,
                                        novel = new_novel_df_H,v_call = 'v_call')
-      names(geno_BV) <- toupper(names(geno_BV))
       geno_BV$GENOTYPED_ALLELES <-apply(geno_BV[,c(2,6:9)],1,function(y){m <- which.max(as.numeric(y[2:5]));paste0(unlist(strsplit((y[1]),','))[1:m],collapse=",")})
     }
   }
@@ -848,7 +851,6 @@ DATA_D_geno <- DATA_D_geno[DATA_D_geno$mut_d == 0,]
 
 
 geno_BD <- inferGenotypeBayesian(DATA_D_geno, find_unmutated = FALSE, germline_db = TRBD_GERM, v_call = 'd_call')
-names(geno_BD) <- toupper(names(geno_BD))
 geno_BD$GENOTYPED_ALLELES <-apply(geno_BD[,c(2,6:9)],1,function(y){m <- which.max(as.numeric(y[2:3]));paste0(unlist(strsplit((y[1]),','))[1:m],collapse=",")})
 
 # handling the D2 alignment error rate, the 01 frequency over heterozygous is between 0.2066 to 0.8969
@@ -857,17 +859,16 @@ D2_01_count <- nrow(DATA_D_geno[DATA_D_geno$d_call=="TRBD2*01",])
 D2_01_freq <- D2_01_count / D2_total
 
 if (D2_01_freq < 0.2066) {
-  geno_BD$GENOTYPED_ALLELES[geno_BD$GENE == "TRBD2"] <- "02"
+  geno_BD$GENOTYPED_ALLELES[geno_BD$gene == "TRBD2"] <- "02"
 } else if (D2_01_freq > 0.8969) {
-  geno_BD$GENOTYPED_ALLELES[geno_BD$GENE == "TRBD2"] <- "01"
-} else if (geno_BD$GENOTYPED_ALLELES[geno_BD$GENE == "TRBD2"] == "01") {
-  geno_BD$GENOTYPED_ALLELES[geno_BD$GENE == "TRBD2"] <- "01,02"
+  geno_BD$GENOTYPED_ALLELES[geno_BD$gene == "TRBD2"] <- "01"
+} else if (geno_BD$GENOTYPED_ALLELES[geno_BD$gene == "TRBD2"] == "01") {
+  geno_BD$GENOTYPED_ALLELES[geno_BD$gene == "TRBD2"] <- "01,02"
 }
 
 
 DATA_J_SA <- DATA[!grepl(pattern = ',',DATA$j_call),]
 geno_BJ <- inferGenotypeBayesian(DATA, germline_db = TRBJ_GERM, find_unmutated = FALSE, v_call = 'j_call')
-names(geno_BJ) <- toupper(names(geno_BJ))
 geno_BJ$GENOTYPED_ALLELES <-apply(geno_BJ[,c(2,6:9)],1,function(y){m <- which.max(as.numeric(y[2:3]));paste0(unlist(strsplit((y[1]),','))[1:m],collapse=",")})
 
 ####################################################################################################################
@@ -920,27 +921,20 @@ gene_usages <- gene_usages[gene_usages$DELETED,]
 
 if (nrow(gene_usages) > 0) {
   deleted_genes <- gene_usages$GENE
-  geno_BV <- geno_BV[!geno_BV$GENE %in% deleted_genes,]
+  geno_BV <- geno_BV[!geno_BV$gene %in% deleted_genes,]
   
   for (gene in deleted_genes) {
     geno_BV[nrow(geno_BV) + 1,] <- c(gene, NA, NA, NA, NA, NA, NA, NA, NA, 1000, "Deletion")
   }
 }
 
-####################################################################################################################
-########################################### WRITE GENOTYPE FILE ####################################################
-####################################################################################################################
-
-geno <- rbind(geno_BV,geno_BD)
-geno <- rbind(geno,geno_BJ)
-write.table(geno, file = paste0(genotypes_path, SAMP, "_TCR_geno.tab"),quote = F,row.names = F,sep = "\t")
 
 ####################################################################################################################
 #################################### CREATE PERSONAL GENOTYPE REFERENCE ############################################
 ####################################################################################################################
 
 ## Remove from TRBV_GERM irrelevant alleles
-NOTGENO.IND <- !(sapply(strsplit(names(TRBV_GERM),'*',fixed=T),'[',1) %in%  geno_BV$GENE)
+NOTGENO.IND <- !(sapply(strsplit(names(TRBV_GERM),'*',fixed=T),'[',1) %in%  geno_BV$gene)
 TRBV_GERM.NEW <- TRBV_GERM[NOTGENO.IND]
 
 for(i in 1:nrow(geno_BV)){
@@ -949,7 +943,7 @@ for(i in 1:nrow(geno_BV)){
     next
   }
 
-  gene <- geno_BV$GENE[i]
+  gene <- geno_BV$gene[i]
 
   alleles <- geno_BV$GENOTYPED_ALLELES[i]
   alleles <- unlist(strsplit(alleles,','))
@@ -959,11 +953,11 @@ for(i in 1:nrow(geno_BV)){
 
 
 ## Remove from TRBD_GERM irrelevant alleles
-NOTGENO.IND <- !(sapply(strsplit(names(TRBD_GERM),'*',fixed=T),'[',1) %in%  geno_BD$GENE)
+NOTGENO.IND <- !(sapply(strsplit(names(TRBD_GERM),'*',fixed=T),'[',1) %in%  geno_BD$gene)
 TRBD_GERM.NEW <- TRBD_GERM[NOTGENO.IND]
 
 for(i in 1:nrow(geno_BD)){
-  gene <- geno_BD$GENE[i]
+  gene <- geno_BD$gene[i]
   alleles <- geno_BD$GENOTYPED_ALLELES[i]
   alleles <- unlist(strsplit(alleles,','))
   IND <- names(TRBD_GERM) %in%  paste(gene,alleles,sep='*')
@@ -971,11 +965,11 @@ for(i in 1:nrow(geno_BD)){
 }
 
 ## Remove from TRBJ_GERM irrelevant alleles
-NOTGENO.IND <- !(sapply(strsplit(names(TRBJ_GERM),'*',fixed=T),'[',1) %in%  geno_BJ$GENE)
+NOTGENO.IND <- !(sapply(strsplit(names(TRBJ_GERM),'*',fixed=T),'[',1) %in%  geno_BJ$gene)
 TRBJ_GERM.NEW <- TRBJ_GERM[NOTGENO.IND]
 
 for(i in 1:nrow(geno_BJ)){
-  gene <- geno_BJ$GENE[i]
+  gene <- geno_BJ$gene[i]
   alleles <- geno_BJ$GENOTYPED_ALLELES[i]
   alleles <- unlist(strsplit(alleles,','))
   IND <- names(TRBJ_GERM) %in%  paste(gene,alleles,sep='*')
@@ -1011,6 +1005,61 @@ write.fasta(sequences = as.list(c(TRBV_GERM.NEW,TRBJ_GERM.NEW)),names = c(names(
 personal_makedb_output <- paste0(sample_path, SAMP, "_genotyped.tab")
 system(paste( makedb_com, "-i", personal_igblast_output,
               "-s", novel_igblast_input, '-r', personal_repo, "-o", personal_makedb_output, makedb_additional_parameters))
+
+
+
+####################################################################################################################
+########################################### WRITE GENOTYPE FILE ####################################################
+####################################################################################################################
+
+DATA <- read.delim(personal_makedb_output, header=T, sep = "\t", stringsAsFactors = F)
+
+v_table <- DATA[!grepl(",", DATA$v_call),]
+v_table <- v_table %>% dplyr::group_by(v_call) %>% dplyr::summarise(N = n())
+v_table$gene <- sapply(strsplit(v_table$v_call, "*", fixed = T), "[", 1)
+v_table$allele <- sapply(strsplit(v_table$v_call, "*", fixed = T), "[", 2)
+geno_BV$Freq_by_Seq <- unlist(lapply(geno_BV$gene, function(g) {
+  if (!g %in% v_table$gene) {
+    return("0")
+  }
+  counts <- v_table$N[v_table$gene==g];
+  counts <- sort(counts, decreasing = T);
+  return(paste(counts, collapse = ";"))
+}))
+
+
+d_table <- DATA[(!grepl(pattern = ',',DATA$d_call) & DATA$d_call !='None') & (DATA$d_sequence_end - DATA$d_sequence_start >= 8),]
+d_table <- d_table[complete.cases(d_table$sequence_id),]
+d_table <- d_table %>% dplyr::group_by(d_call) %>% dplyr::summarise(N = n())
+d_table$gene <- sapply(strsplit(d_table$d_call, "*", fixed = T), "[", 1)
+d_table$allele <- sapply(strsplit(d_table$d_call, "*", fixed = T), "[", 2)
+geno_BD$Freq_by_Seq <- unlist(lapply(geno_BD$gene, function(g) {
+  if (!g %in% d_table$gene) {
+    return("0")
+  }
+  counts <- d_table$N[d_table$gene==g];
+  counts <- sort(counts, decreasing = T);
+  return(paste(counts, collapse = ";"))
+}))
+
+j_table <- DATA[!grepl(",", DATA$j_call),]
+j_table <- j_table %>% dplyr::group_by(j_call) %>% dplyr::summarise(N = n())
+j_table$gene <- sapply(strsplit(j_table$j_call, "*", fixed = T), "[", 1)
+j_table$allele <- sapply(strsplit(j_table$j_call, "*", fixed = T), "[", 2)
+geno_BJ$Freq_by_Seq <- unlist(lapply(geno_BJ$gene, function(g) {
+  if (!g %in% j_table$gene) {
+    return("0")
+  }
+  counts <- j_table$N[j_table$gene==g];
+  counts <- sort(counts, decreasing = T);
+  return(paste(counts, collapse = ";"))
+}))
+
+
+geno <- rbind(geno_BV,geno_BD)
+geno <- rbind(geno,geno_BJ)
+geno$Freq_by_Clone <- geno$Freq_by_Seq
+write.table(geno, file = paste0(genotypes_path, SAMP, "_genotype.tsv"),quote = F,row.names = F,sep = "\t")
 
 
 ####################################################################################################################
