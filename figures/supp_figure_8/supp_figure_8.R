@@ -127,7 +127,7 @@ FAM.COL <- c('TRBV1'='red','TRBV2'='blue','TRBV3'='darkgreen','TRBV4'='purple','
 color.panel2 <- c('A'='#e69f00','C'='#56b4e9','G'='#009e73','T'='#f0e442', 'N'='grey', 'gap'='black')
 
 
-pdf(paste0("master_project/5utr/", "5utr_against_ref.pdf"),height = 8,width = 10)
+pdf(paste0(figure_folder, "5utr_against_ref.pdf"),height = 8,width = 10)
 
 break_lim <- round(max(UTR.db.flt.mlt.rev$POS)/10)*10
 ggplot(UTR.db.flt.mlt.rev, aes(x=(-POS), y=ALLELE, fill=NT)) + 

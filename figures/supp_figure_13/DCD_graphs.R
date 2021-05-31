@@ -11,7 +11,7 @@ library(grid)
 # the path to the repository
 project_folder <- "tcr_genotype/"
 required_files_folder <- paste0(project_folder, "figures/data/")
-figure_folder <- paste0(project_folder, "figures/supp_figure_12/")
+figure_folder <- paste0(project_folder, "figures/supp_figure_13/")
 
 
 genes_usage <- read.delim(paste0(required_files_folder, "HCV_DELETIONS.tab"), sep = "\t", stringsAsFactors = F)

@@ -17,7 +17,7 @@ library(gridExtra)
 # the path to the repository
 project_folder <- "tcr_genotype/"
 required_files_folder <- paste0(project_folder, "figures/data/")
-figure_folder <- paste0(project_folder, "figures/supp_figure_15/")
+figure_folder <- paste0(project_folder, "figures/supp_figure_17/")
 
 DATA <- read.delim(paste0(required_files_folder, "TRBV6_23_merged_makedb.tab"), header = T, sep = "\t", stringsAsFactors = F)
 upstream_v_seqs_df <- read.delim(paste0(required_files_folder, "5UTR_unfilter_seqs.tab"), header = T, sep = "\t", stringsAsFactors = F)

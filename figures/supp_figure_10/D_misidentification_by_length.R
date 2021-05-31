@@ -14,7 +14,7 @@ library(gridExtra)
 # the path to the repository
 project_folder <- "tcr_genotype/"
 required_files_folder <- paste0(project_folder, "figures/data/")
-figure_folder <- paste0(project_folder, "figures/supp_figure_9/")
+figure_folder <- paste0(project_folder, "figures/supp_figure_10/")
 references_folder <- paste0(project_folder, "pipeline/fasta_references/")
 
 # Load TRB locus and pseudo genes

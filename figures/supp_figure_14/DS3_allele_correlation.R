@@ -11,7 +11,7 @@ library(wesanderson)
 # the path to the repository
 project_folder <- "tcr_genotype/"
 required_files_folder <- paste0(project_folder, "figures/data/")
-figure_folder <- paste0(project_folder, "figures/supp_figure_13/")
+figure_folder <- paste0(project_folder, "figures/supp_figure_14/")
 
 genotypes <- read.delim(paste0(required_files_folder, "BIOMED2_All_Genotypes.tab"), header = T, sep = "\t", stringsAsFactors = F)
 
