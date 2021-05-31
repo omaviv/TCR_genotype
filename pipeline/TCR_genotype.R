@@ -736,7 +736,7 @@ geno_BV$GENOTYPED_ALLELES <-apply(geno_BV[,c(2,6:9)],1,function(y){m <- which.ma
 if (filter_chimera) {
   trizygous <- geno_BV[str_count(geno_BV$GENOTYPED_ALLELES, ",") >=2 ,]
   trizygous <- trizygous %>% tidyr::separate_rows(GENOTYPED_ALLELES, sep = ",")
-  trizygous$full_name <- paste0(trizygous$GENE, "*", trizygous$GENOTYPED_ALLELES)
+  trizygous$full_name <- paste0(trizygous$gene, "*", trizygous$GENOTYPED_ALLELES)
   novel_names <- trizygous$full_name[grepl("_[A-Z]", trizygous$GENOTYPED_ALLELES)]
   
   if (length(novel_names)){
@@ -744,7 +744,7 @@ if (filter_chimera) {
     for (novel in novel_names) {
       novel_seq <- unlist(strsplit(as.character(TRBV_GERM[[novel]]), ""))
       gene <- sapply(strsplit(novel, "*", fixed=T), "[", 1)
-      gene_alleles <- trizygous$full_name[trizygous$GENE == gene]
+      gene_alleles <- trizygous$full_name[trizygous$gene == gene]
       gene_alleles <- TRBV_GERM[gene_alleles]
       
       for (allele in names(gene_alleles)) {
