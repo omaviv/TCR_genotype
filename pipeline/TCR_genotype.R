@@ -1066,8 +1066,15 @@ write.table(geno, file = paste0(genotypes_path, SAMP, "_genotype.tsv"),quote = F
 ############################################# Haplotype Inference ##################################################
 ####################################################################################################################
 
-hetero_j16 <- grepl(",", geno$GENOTYPED_ALLELES[geno$gene == "TRBJ1-6"])
-hetero_d2 <- grepl(",", geno$GENOTYPED_ALLELES[geno$gene == "TRBD2"])
+hetero_j16 <- "TRBJ1-6" %in% geno$gene
+if (hetero_j16) {
+  hetero_j16 <- grepl(",", geno$GENOTYPED_ALLELES[geno$gene == "TRBJ1-6"])
+}
+
+hetero_d2 <- "TRBD2" %in% geno$gene
+if (hetero_d2) {
+  hetero_d2 <- grepl(",", geno$GENOTYPED_ALLELES[geno$gene == "TRBD2"])
+}
 
 if (!((hetero_j16) | (hetero_d2))) {
   quit()
