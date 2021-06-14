@@ -248,7 +248,7 @@ novel_allele_graph <- ggplot(SUBJECT_NOVEL_ALLELES_DF, aes(x = SUBJECT, y = NOVE
   scale_fill_manual(values = c("white", "skyblue", "blue")) +
   xlab("Individuals") + ylab(y_label) +
   guides(fill=guide_legend(title="", reverse=TRUE)) + 
-  theme(axis.title = element_text(size = 16),
+  theme(axis.title = element_text(size=16), legend.title = element_text(size=16), legend.text = element_text(size=14),
         axis.text.x= element_text(angle = 90, vjust = 0.3),
         axis.text.y= element_text(color = allele_colors))
 # axis.text.x= element_text(angle = 90, vjust = 0.3))
@@ -304,12 +304,12 @@ snp_freq_plot <- ggplot(novel_appearance_df, aes(y=novel_allele, x=allele_freq, 
   scale_color_manual(values = c("skyblue", "blue", "grey")) +
   xlab('Allele fraction') + ylab('Polymorphism call') + 
   geom_hline(yintercept = 0.25, linetype="dashed", color = "gray50") +
-  theme(axis.title = element_text(size = 16))
+  theme(axis.title = element_text(size=16), legend.title = element_text(size=16), legend.text = element_text(size=14))
 snp_freq_plot
 
 
 shape_legend <- ggplot(novel_appearance_df, aes(y=novel_allele, x=allele_freq, shape=n_sequences)) + 
-  geom_point(size=3) + labs(shape="Number of gene single assignment sequences")
+  geom_point(size=3) + labs(shape="Number of gene single\nassignment sequences")
 shape_legend <- get_legend(shape_legend)
 
 snp_freq_plot <- snp_freq_plot + theme(axis.title.y = element_blank(), axis.text.y = element_blank(), legend.position = "none")
@@ -318,7 +318,7 @@ temp <- novel_allele_graph  + theme(legend.position = "none")
 # build legend
 leg_df <- data.frame(x=rep(c(1:4), 4), y=unlist(lapply(1:4, rep, 4)), stringsAsFactors = F)
 leg_df$carry <- ""
-leg_texts <- c("", "lk < 3", "Undocumented allele not in genotype", "Heterozygous to the undocumented allele", "Homozygous to the undocumented allele")
+leg_texts <- c("", "lk < 3", "Undocumented allele\nnot in genotype", "Heterozygous to\nthe undocumented allele", "Homozygous to\nthe undocumented allele")
 leg_df$carry[leg_df$x == 1] <- leg_texts[-1]
 leg_df$carry <- factor(leg_df$carry, levels = leg_texts)
 
@@ -354,9 +354,9 @@ p2.common.y$heights <- p1.common.y$heights
 
 ds1_ds2_graph <- grid.arrange(p1.common.y, p2.common.y, ncol=2, widths=c(0.75,0.25))
 
-ds1_ds2_graph <- grid.arrange(grobs = list(ds1_ds2_graph, leg_plot, shape_legend), layout_matrix = rbind(c(1,1,1,1,3),
-                                                                                 c(1,1,1,1,2),
-                                                                                 c(1,1,1,1,NA)))
+ds1_ds2_graph <- grid.arrange(grobs = list(ds1_ds2_graph, leg_plot, shape_legend), layout_matrix = rbind(c(1,1,1,1,1,3),
+                                                                                 c(1,1,1,1,1,2),
+                                                                                 c(1,1,1,1,1,NA)))
 
 
 
@@ -419,13 +419,14 @@ full_trbv$allele_number <- as.integer(full_trbv$allele_number)
 full_trbv <- full_trbv[!full_trbv$GENE %in% PSEUDO[["TRB"]],]
 full_gene_allele_num_plot <- ggplot(data=full_trbv[order(full_trbv$allele_number, decreasing = T),], aes(x=GENE, y=allele_number, fill=novel, group=group)) +
   geom_bar(width = 0.8, stat="identity", color="black", position=position_dodge())+
-  scale_y_continuous(expand = c(0, 0)) +
+  scale_y_continuous(expand = c(0, 0), breaks = seq(0, max(full_trbv$allele_number))) +
   scale_fill_manual(values=c("darkred", "firebrick3", "cyan4")) + 
   xlab("TRBV Genes") + ylab("Number of alleles") + ggtitle("DS1 & DS2") + 
   guides(fill=guide_legend("", nrow = 1)) +
   theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(), 
         panel.background = element_blank(), axis.line = element_line(colour = "black"),
-        axis.text.x = element_text(size=10, angle = 90, vjust = 0.5), axis.text.y = element_text(size=10),
+        axis.text.x = element_text(size=12, angle = 90, vjust = 0.5), axis.text.y = element_text(size=12),
+        axis.title = element_text(size=16), legend.title = element_text(size=16), legend.text = element_text(size=14),
         legend.position=c(0.5,0.9))
 
 full_gene_allele_num_plot
@@ -494,7 +495,8 @@ biomed_gene_allele_num_plot <- ggplot(data=biomed_trbv[order(biomed_trbv$allele_
   guides(fill=guide_legend("", nrow = 1)) +
   theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(), 
         panel.background = element_blank(), axis.line = element_line(colour = "black"),
-        axis.text.x = element_text(size=10, angle = 90, vjust = 0.5), axis.text.y = element_text(size=10),
+        axis.text.x = element_text(size=12, angle = 90, vjust = 0.5), axis.text.y = element_text(size=12),
+        axis.title = element_text(size=16), legend.title = element_text(size=16), legend.text = element_text(size=14),
         legend.position=c(0.5,0.9))
 
 biomed_gene_allele_num_plot
@@ -559,7 +561,8 @@ adaptive_gene_allele_num_plot <- ggplot(data=adaptive_trbv[order(adaptive_trbv$a
   guides(fill=guide_legend("", nrow = 1)) +
   theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(), 
         panel.background = element_blank(), axis.line = element_line(colour = "black"),
-        axis.text.x = element_text(size=10, angle = 90, vjust = 0.5), axis.text.y = element_text(size=10),
+        axis.text.x = element_text(size=12, angle = 90, vjust = 0.5), axis.text.y = element_text(size=12),
+        axis.title = element_text(size=16), legend.title = element_text(size=16), legend.text = element_text(size=14),
         legend.position=c(0.5,0.9))
 
 adaptive_gene_allele_num_plot
@@ -570,32 +573,23 @@ adaptive_gene_allele_num_plot
 
 require(grid)
 a_label <- textGrob(
-  label = "a.",
+  label = "A.",
   gp = gpar(fontsize = 28), 
   x = unit(0, "lines"), 
   y = unit(0, "lines"),
   hjust = 0, vjust = 0)
 
 b_label <- textGrob(
-  label = "b.",
+  label = "B.",
   gp = gpar(fontsize = 28), 
   x = unit(0, "lines"), 
   y = unit(0, "lines"),
   hjust = 0, vjust = 0)
 
-c_label <- textGrob(
-  label = "c.",
-  gp = gpar(fontsize = 28), 
-  x = unit(0, "lines"), 
-  y = unit(0, "lines"),
-  hjust = 0, vjust = 0)
+y_label <- textGrob(
+  label = "Number of Alleles",
+  gp = gpar(fontsize = 16), rot=90)
 
-d_label <- textGrob(
-  label = "d.",
-  gp = gpar(fontsize = 28), 
-  x = unit(0, "lines"), 
-  y = unit(0, "lines"),
-  hjust = 0, vjust = 0)
 
 ds1_ds2_graph <- arrangeGrob(ds1_ds2_graph, top = a_label)
 
@@ -604,8 +598,8 @@ full_gene_allele_num_plot <- full_gene_allele_num_plot + theme(axis.title.y = el
 biomed_gene_allele_num_plot <- biomed_gene_allele_num_plot + theme(axis.title.y = element_blank(), axis.title.x = element_blank(), axis.text.x = element_blank(), legend.position = "none")
 adaptive_gene_allele_num_plot <- adaptive_gene_allele_num_plot + theme(axis.title.y = element_blank(), legend.position = "none")
 
-gene_allele_num_plot <- grid.arrange(full_gene_allele_num_plot, biomed_gene_allele_num_plot, adaptive_gene_allele_num_plot, ncol=1, heights=c(1,1,1.4))
-gene_allele_num_plot <- arrangeGrob(gene_allele_num_plot, top = b_label, left = "Number of Alleles", bottom = "TRBV genes")
+gene_allele_num_plot <- grid.arrange(full_gene_allele_num_plot, biomed_gene_allele_num_plot, adaptive_gene_allele_num_plot, ncol=1, heights=c(1.1,1,1.8))
+gene_allele_num_plot <- arrangeGrob(gene_allele_num_plot, top = b_label, left = y_label, bottom = textGrob(label = "TRBV genes", gp = gpar(fontsize = 16)))
 gene_allele_num_plot <- grid.arrange(gene_allele_num_plot, gene_allele_num_leg, ncol=1, heights=c(10, 1))
 
 g <- grid.arrange(

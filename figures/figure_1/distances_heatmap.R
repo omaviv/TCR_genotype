@@ -83,6 +83,7 @@ full_trbv_dis_graph <- ggplot(dt2, aes(x = rowname, y = colname, fill = value)) 
   theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(), 
         panel.background = element_blank(), axis.line = element_line(colour = "black"),
         axis.text.x = element_text(size=8, angle = 90, vjust = 0.5), axis.text.y = element_text(size=8),
+        axis.title = element_text(size=14), legend.title = element_text(size=14), legend.text = element_text(size=12),
         plot.title = element_text(hjust = 0.5), legend.position="bottom")
 
 ###############################################################################################################################
@@ -113,6 +114,7 @@ biomed_trbv_dis_graph <- ggplot(dt2, aes(x = rowname, y = colname, fill = value)
   theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(), 
         panel.background = element_blank(), axis.line = element_line(colour = "black"),
         axis.text.x = element_text(size=8, angle = 90, vjust = 0.5), axis.text.y = element_text(size=8),
+        axis.title = element_text(size=14), legend.title = element_text(size=14), legend.text = element_text(size=12),
         plot.title = element_text(hjust = 0.5), legend.position="bottom")
 
 ###############################################################################################################################
@@ -143,6 +145,7 @@ adapt_trbv_dis_graph <- ggplot(dt2, aes(x = rowname, y = colname, fill = value))
   theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(), 
         panel.background = element_blank(), axis.line = element_line(colour = "black"),
         axis.text.x = element_text(size=8, angle = 90, vjust = 0.5), axis.text.y = element_text(size=8),
+        axis.title = element_text(size=14), legend.title = element_text(size=14), legend.text = element_text(size=12),
         plot.title = element_text(hjust = 0.5), legend.position="bottom")
 
 #####################################################################################################################
@@ -178,6 +181,7 @@ gene_allele_num_plot <- ggplot(data=gene_allele_num_df, aes(x=Gene, y=Allele_num
   xlab("TRBV Genes") + ylab("Number of \n unique sequences") +  labs(fill="Sequencing approach") +
   theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(), 
         panel.background = element_blank(), axis.line = element_line(colour = "black"),
+        axis.title = element_text(size=14), legend.title = element_text(size=14), legend.text = element_text(size=12),
         axis.text.x = element_text(size=10, angle = 90, vjust = 0.5), axis.text.y = element_text(size=10))
 
 
@@ -200,28 +204,28 @@ adapt_trbv_dis_graph <- adapt_trbv_dis_graph + theme(legend.position="none", axi
 
 require(grid)
 a_label <- textGrob(
-  label = "a.",
+  label = "A.",
   gp = gpar(fontsize = 28), 
   x = unit(0, "lines"), 
   y = unit(0, "lines"),
   hjust = 0, vjust = 0)
 
 b_label <- textGrob(
-  label = "b.",
+  label = "B.",
   gp = gpar(fontsize = 28), 
   x = unit(0, "lines"), 
   y = unit(0, "lines"),
   hjust = 0, vjust = 0)
 
 c_label <- textGrob(
-  label = "c.",
+  label = "C.",
   gp = gpar(fontsize = 28), 
   x = unit(0, "lines"), 
   y = unit(0, "lines"),
   hjust = 0, vjust = 0)
 
 d_label <- textGrob(
-  label = "d.",
+  label = "D.",
   gp = gpar(fontsize = 28), 
   x = unit(0, "lines"), 
   y = unit(0, "lines"),
