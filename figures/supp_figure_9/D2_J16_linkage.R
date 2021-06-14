@@ -118,15 +118,6 @@ biomed2_j16_d2_relation_graph <- ggplot(BIOMED2_TRBJ1_6_TRBD2, aes(x = D2_GENO, 
         panel.background = element_blank(), axis.line = element_line(colour = "black"),
         axis.text = element_text(size=8))
 
-require(grid)
-title.grob <- textGrob(
-  label = "e.",
-  x = unit(0, "lines"), 
-  y = unit(0, "lines"),
-  hjust = 0, vjust = 0)
-
-biomed2_j16_d2_relation_graph <- arrangeGrob(biomed2_j16_d2_relation_graph, top = title.grob)
-
 ggsave(paste0(figure_folder, "BIOMED2_D2_J1_6_RELATION.pdf"), biomed2_j16_d2_relation_graph)
 # ggsave(paste0(figure_folder, "BIOMED2_D2_J1_6_RELATION.png"), biomed2_j16_d2_relation_graph)
 
