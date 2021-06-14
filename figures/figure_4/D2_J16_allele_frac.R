@@ -49,13 +49,15 @@ hcv_d2_error_graph <- ggplot(HCV_GENO_TRBD2, aes(x=FREQ_01)) +
   geom_histogram(breaks = seq(0, 1, by = 0.025), colour="black", fill="darkgrey") +
   xlab("TRBD2*01 fraction") + ylab("Number of individuals")+
   theme_classic() + 
-  theme(axis.text.y = element_text(angle = 90, hjust = 0.5))
+  theme(axis.text.y = element_text(angle = 90, hjust = 0.5, size=12), axis.text.x = element_text(size=12),
+        axis.title = element_text(size=16), legend.title = element_text(size=16), legend.text = element_text(size=14))
 
 hcv_d2_error_graph
 
 require(grid)
 title.grob <- textGrob(
-  label = "a.",
+  label = "A.",
+  gp = gpar(fontsize = 20), 
   x = unit(0, "lines"), 
   y = unit(0, "lines"),
   hjust = 0, vjust = 0)
@@ -99,13 +101,15 @@ adapt_d2_error_graph <- ggplot(Adaptive_GENO_TRBD2, aes(x=FREQ_01)) +
   geom_vline(xintercept=c(D2_02_HOMO_HETERO_BOUND, D2_01_HOMO_HETERO_BOUND)) +
   xlab("TRBD2*01 fraction") + ylab("Number of individuals")+
   theme_classic() + 
-  theme(axis.text.y = element_text(angle = 90, hjust = 0.5))
+  theme(axis.text.y = element_text(angle = 90, hjust = 0.5, size=12), axis.text.x = element_text(size=12),
+        axis.title = element_text(size=16), legend.title = element_text(size=16), legend.text = element_text(size=14))
 
 adapt_d2_error_graph
 
 require(grid)
 title.grob <- textGrob(
-  label = "c.",
+  label = "C.",
+  gp = gpar(fontsize = 20), 
   x = unit(0, "lines"), 
   y = unit(0, "lines"),
   hjust = 0, vjust = 0)
@@ -154,14 +158,16 @@ biomed_d2_error_graph <- ggplot(BIOMED2_GENO_TRBD2, aes(x=FREQ_01)) +
   geom_vline(xintercept=c(D2_HOMO02_BOUND, D2_HETERO_1_BOUND, D2_HETERO_2_BOUND, D2_HOMO01_BOUND), linetype='dashed') +
   xlab("TRBD2*01 fraction") + ylab("Number of individuals")+
   theme_classic() + 
-  theme(axis.text.y = element_text(angle = 90, hjust = 0.5))
+  theme(axis.text.y = element_text(angle = 90, hjust = 0.5, size=12), axis.text.x = element_text(size=12),
+        axis.title = element_text(size=16), legend.title = element_text(size=16), legend.text = element_text(size=14))
 
 
 biomed_d2_error_graph
 
 require(grid)
 title.grob <- textGrob(
-  label = "b.",
+  label = "B.",
+  gp = gpar(fontsize = 20), 
   x = unit(0, "lines"), 
   y = unit(0, "lines"),
   hjust = 0, vjust = 0)
@@ -193,13 +199,17 @@ summary(BIOMED2_GENO_TRBJ1_6$TOTAL)
 biomed_j1_6_graph <- ggplot(BIOMED2_GENO_TRBJ1_6, aes(x=FREQ_01)) + 
   geom_histogram(breaks = seq(0, 1, by = 0.025), colour="black", fill="darkgrey") +
   xlab("TRBJ1-6*01 fraction") + ylab("Number of individuals")+
-  theme_classic()
+  theme_classic()  + 
+  theme(axis.text.y = element_text(angle = 90, hjust = 0.5, size=12), axis.text.x = element_text(size=12),
+        axis.title = element_text(size=16), legend.title = element_text(size=16), legend.text = element_text(size=14))
+
 
 biomed_j1_6_graph
 
 require(grid)
 title.grob <- textGrob(
-  label = "d.",
+  label = "D.",
+  gp = gpar(fontsize = 20), 
   x = unit(0, "lines"), 
   y = unit(0, "lines"),
   hjust = 0, vjust = 0)
