@@ -64,6 +64,8 @@ d_usage_by_len_graph <- ggplot(d_usage_by_len[d_usage_by_len$d_len <= 12,], aes(
   xlab("TRBD length") + ylab("Fraction") + labs(fill="Assignments") + 
   scale_y_continuous(expand = c(0, 0)) +
   theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(), 
+        axis.text.y = element_text(size=12), axis.text.x = element_text(size=10),
+        axis.title = element_text(size=16), legend.title = element_text(size=16), legend.text = element_text(size=14),
         panel.background = element_blank(), axis.line = element_line(colour = "black"))
 
 # ggsave(paste0(figure_folder, "DS4_TRBD_usage_by_length.pdf"), d_usage_by_len_graph)
@@ -120,6 +122,8 @@ d2_j1_pairing_graph <- ggplot(d2_j1_pairing, aes(x=as.factor(d_len), y=pair_frac
   guides(fill=guide_legend("TRBD2 genotype")) +
   scale_y_continuous(expand = c(0, 0)) +
   theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(), 
+        axis.text.y = element_text(size=12), axis.text.x = element_text(size=10),
+        axis.title = element_text(size=16), legend.title = element_text(size=16), legend.text = element_text(size=14),
         panel.background = element_blank(), axis.line = element_line(colour = "black"))
 
 # ggsave(paste0(figure_folder, "DS4_TRBD2_J1_pairing_by_length.pdf"), d2_j1_pairing_graph)
@@ -129,10 +133,25 @@ d2_j1_pairing_graph <- ggplot(d2_j1_pairing, aes(x=as.factor(d_len), y=pair_frac
 ################### Collapse the 4 plots into one figure #########################################################################################
 ##################################################################################################################################################
 
-d_usage_by_len_graph <- arrangeGrob(d_usage_by_len_graph, top = set_title("a."))
+a_label <- textGrob(
+  label = "A.",
+  gp = gpar(fontsize = 18), 
+  x = unit(0, "lines"), 
+  y = unit(0, "lines"),
+  hjust = 0, vjust = 0)
+
+b_label <- textGrob(
+  label = "B.",
+  gp = gpar(fontsize = 18), 
+  x = unit(0, "lines"), 
+  y = unit(0, "lines"),
+  hjust = 0, vjust = 0)
+
+
+d_usage_by_len_graph <- arrangeGrob(d_usage_by_len_graph, top = a_label)
 # d_usage_by_len_01_graph <- arrangeGrob(d_usage_by_len_01_graph, top = set_title("b."))
 # d_usage_by_len_02_graph <- arrangeGrob(d_usage_by_len_02_graph, top = set_title("c."))
-d2_j1_pairing_graph <- arrangeGrob(d2_j1_pairing_graph, top = set_title("b."))
+d2_j1_pairing_graph <- arrangeGrob(d2_j1_pairing_graph, top = b_label)
 
 
 g <- grid.arrange(

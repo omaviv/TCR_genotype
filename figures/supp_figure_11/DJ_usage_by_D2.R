@@ -80,6 +80,8 @@ d2_usage_graph <- ggplot(d_usage_df, aes(x=gsub("TRB", "", d_gene), y=usage, fil
   ylab("Usage") + xlab("") +
   labs(fill="TRBD2 genotype") +
   theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(), 
+        axis.text.y = element_text(size=12), axis.text.x = element_text(size=10),
+        axis.title = element_text(size=16), legend.title = element_text(size=16), legend.text = element_text(size=14),
         panel.background = element_blank(), axis.line = element_line(colour = "black"))
 
 temp <- d_usage_df[d_usage_df$d2_geno %in% c("01", "02"),] 
@@ -100,8 +102,10 @@ trbj_usage_graph <- ggplot(trbj_usage, aes(x=gsub("TRB", "", j_gene), y=usage, f
   ylab("Usage") + xlab("TRBJ gene") +
   guides(fill=guide_legend("TRBD2 genotype", nrow = 1)) +
   theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(), 
+        axis.text.y = element_text(size=12), 
+        axis.title = element_text(size=16), legend.title = element_text(size=16), legend.text = element_text(size=14),
         panel.background = element_blank(), axis.line = element_line(colour = "black"),
-        legend.position=c(0.5,0.9), axis.text.x=element_text(color=gene_colors))
+        legend.position=c(0.5,0.9), axis.text.x=element_text(color=gene_colors, size=10))
 
 
 
@@ -149,6 +153,8 @@ trbj_family_usage_graph <- ggplot(trbj_family_usage, aes(x=gsub("TRB", "", j_fam
   guides(fill=guide_legend("TRBD2 genotype", nrow = 1)) +
   theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(), 
         panel.background = element_blank(), axis.line = element_line(colour = "black"),
+        axis.text.y = element_text(size=12), axis.text.x = element_text(size=10),
+        axis.title = element_text(size=16), legend.title = element_text(size=16), legend.text = element_text(size=14),
         legend.position=c(0.5,0.9))
 # legend.position=c(0.5,0.9), axis.text.x=element_text(color=gene_colors))
 
@@ -188,6 +194,8 @@ trbj1_usage_graph <- ggplot(trbj1_usage, aes(x=gsub("TRB", "", j_gene), y=norm_u
   guides(fill=guide_legend("TRBD2 genotype", nrow = 1)) +
   theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(), 
         panel.background = element_blank(), axis.line = element_line(colour = "black"),
+        axis.text.y = element_text(size=12), axis.text.x = element_text(size=10),
+        axis.title = element_text(size=16), legend.title = element_text(size=16), legend.text = element_text(size=14),
         legend.position=c(0.5,0.9))
 # legend.position=c(0.5,0.9), axis.text.x=element_text(color=gene_colors))
 
@@ -208,6 +216,8 @@ trbj2_usage_graph <- ggplot(trbj2_usage, aes(x=gsub("TRB", "", j_gene), y=norm_u
   guides(fill=guide_legend("TRBD2 genotype", nrow = 1)) +
   theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(), 
         panel.background = element_blank(), axis.line = element_line(colour = "black"),
+        axis.text.y = element_text(size=12), axis.text.x = element_text(size=10),
+        axis.title = element_text(size=16), legend.title = element_text(size=16), legend.text = element_text(size=14),
         legend.position=c(0.5,0.9))
 # legend.position=c(0.5,0.9), axis.text.x=element_text(color=gene_colors))
 
@@ -249,6 +259,8 @@ d2_j2_pairing_graph <- ggplot(d2_j2_pairing, aes(x=j_gene, y=frac)) +
   xlab("TRBJ2 gene") + ylab("P(TRBJ2-N|TRBD2)") + 
   guides(fill=guide_legend("TRBD2 genotype")) +
   theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(), 
+        axis.text.y = element_text(size=12), axis.text.x = element_text(size=10),
+        axis.title = element_text(size=16), legend.title = element_text(size=16), legend.text = element_text(size=14),
         panel.background = element_blank(), axis.line = element_line(colour = "black"))
 
 d2_j2_pairing_graph
@@ -285,6 +297,8 @@ d1_j_fam_pairing_graph <- ggplot(d1_j_fam_pairing, aes(x=gsub("TRB", "", j_famil
   xlab("TRBJ family") + ylab("P(TRBJ|TRBD1)") + 
   guides(fill=guide_legend("TRBD2 genotype")) +
   theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(), 
+        axis.text.y = element_text(size=12), axis.text.x = element_text(size=10),
+        axis.title = element_text(size=16), legend.title = element_text(size=16), legend.text = element_text(size=14),
         panel.background = element_blank(), axis.line = element_line(colour = "black"))
 
 y.values <- sapply(split(d1_j_fam_pairing, d1_j_fam_pairing$j_family), function(x){max(x$frac)}) + max(d1_j_fam_pairing$frac)/20
@@ -320,7 +334,9 @@ d1_j_pairing_graph <- ggplot(d1_j_pairing, aes(x=j_gene, y=frac)) +
   xlab("TRBJ gene") + ylab("P(TRBJ1/2-N|TRBD1)") + 
   theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(), 
         panel.background = element_blank(), axis.line = element_line(colour = "black"), 
-        axis.text.x=element_text(color=gene_colors))
+        axis.text.y = element_text(size=12),
+        axis.title = element_text(size=16), legend.title = element_text(size=16), legend.text = element_text(size=14),
+        axis.text.x=element_text(size=10, color=gene_colors))
 
 y.values <- sapply(split(d1_j_pairing, d1_j_pairing$j_gene), function(x){max(x$frac)}) + max(d1_j_pairing$frac)/20
 
@@ -354,6 +370,8 @@ d1_j2_pairing_graph <- ggplot(d1_j2_pairing[!grepl(",", d1_j2_pairing$j_gene),],
   scale_y_continuous(expand = c(0, 0), limits = c(0, max(d1_j2_pairing$frac) *1.1)) +
   guides(fill=guide_legend("TRBD2 genotype")) +
   theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(), 
+        axis.text.y = element_text(size=12), axis.text.x = element_text(size=10),
+        axis.title = element_text(size=16), legend.title = element_text(size=16), legend.text = element_text(size=14),
         panel.background = element_blank(), axis.line = element_line(colour = "black"))
 
 d1_j2_pairing_graph
@@ -373,28 +391,71 @@ d1_j2_pairing_graph <- d1_j2_pairing_graph + geom_signif(y_position = y.values, 
 ################### Merge all 6 graphs into 1 figure #############################################################################################
 ##################################################################################################################################################
 
+a_label <- textGrob(
+  label = "A.",
+  gp = gpar(fontsize = 20), 
+  x = unit(0, "lines"), 
+  y = unit(0, "lines"),
+  hjust = 0, vjust = 0)
+
+b_label <- textGrob(
+  label = "B.",
+  gp = gpar(fontsize = 20), 
+  x = unit(0, "lines"), 
+  y = unit(0, "lines"),
+  hjust = 0, vjust = 0)
+
+c_label <- textGrob(
+  label = "C.",
+  gp = gpar(fontsize = 20), 
+  x = unit(0, "lines"), 
+  y = unit(0, "lines"),
+  hjust = 0, vjust = 0)
+
+d_label <- textGrob(
+  label = "D.",
+  gp = gpar(fontsize = 20), 
+  x = unit(0, "lines"), 
+  y = unit(0, "lines"),
+  hjust = 0, vjust = 0)
+
+e_label <- textGrob(
+  label = "E.",
+  gp = gpar(fontsize = 20), 
+  x = unit(0, "lines"), 
+  y = unit(0, "lines"),
+  hjust = 0, vjust = 0)
+
+f_label <- textGrob(
+  label = "F.",
+  gp = gpar(fontsize = 20), 
+  x = unit(0, "lines"), 
+  y = unit(0, "lines"),
+  hjust = 0, vjust = 0)
+
+
 d2_usage_graph <- d2_usage_graph  + theme(legend.position="none", axis.title.x = element_blank())
 trbj_usage_graph <- trbj_usage_graph + theme(legend.position="none", axis.title.y = element_blank(), axis.title.x = element_blank())
-trbdj_usage_graph <- arrangeGrob(d2_usage_graph, trbj_usage_graph, bottom = "TRB gene", widths = c(0.25,0.75), 
-                                 ncol=2, top = set_title("a."))
+trbdj_usage_graph <- arrangeGrob(d2_usage_graph, trbj_usage_graph, bottom = textGrob(label = "TRB gene", gp = gpar(fontsize = 16)), widths = c(0.25,0.75), 
+                                 ncol=2, top = a_label)
 
 trbj_family_usage_graph <- trbj_family_usage_graph + theme(legend.position="none")
-trbj_family_usage_graph <- arrangeGrob(trbj_family_usage_graph, top = set_title("b."))
+trbj_family_usage_graph <- arrangeGrob(trbj_family_usage_graph, top = b_label)
 
 trbj1_usage_graph <- trbj1_usage_graph + theme(legend.position="none", axis.title.x = element_blank())
 trbj2_usage_graph <- trbj2_usage_graph + theme(legend.position="none", axis.text.y = element_blank(), axis.title.x = element_blank())
-trbj_norm_usage_graph <- arrangeGrob(trbj1_usage_graph, trbj2_usage_graph, bottom = "TRBJ gene", widths = c(0.63, 0.67), ncol=2, top = set_title("c."))
+trbj_norm_usage_graph <- arrangeGrob(trbj1_usage_graph, trbj2_usage_graph, bottom = textGrob(label = "TRBJ gene", gp = gpar(fontsize = 16)), widths = c(0.63, 0.67), ncol=2, top = c_label)
 
 
 d2_j2_pairing_graph <- d2_j2_pairing_graph + theme(legend.position="none")
-d2_j2_pairing_graph <- arrangeGrob(d2_j2_pairing_graph, top = set_title("d."))
+d2_j2_pairing_graph <- arrangeGrob(d2_j2_pairing_graph, top = d_label)
 
 
 d1_j_pairing_graph <- d1_j_pairing_graph + theme(legend.position="none")
-d1_j_pairing_graph <- arrangeGrob(d1_j_pairing_graph, top = set_title("e."))
+d1_j_pairing_graph <- arrangeGrob(d1_j_pairing_graph, top = e_label)
 
 d1_j2_pairing_graph <- d1_j2_pairing_graph + theme(legend.position="none")
-d1_j2_pairing_graph <- arrangeGrob(d1_j2_pairing_graph, top = set_title("f."))
+d1_j2_pairing_graph <- arrangeGrob(d1_j2_pairing_graph, top = f_label)
 
 g <- grid.arrange(
   grobs = list(trbdj_usage_graph, trbj_family_usage_graph, trbj_norm_usage_graph, d2_j2_pairing_graph,
