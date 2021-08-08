@@ -6,6 +6,7 @@ library(gridExtra)
 library(cowplot)
 library(magick)
 library(seqinr)
+library(RColorBrewer)
 
 #####################################################################################################################
 ############################ Load required files ####################################################################
@@ -31,12 +32,10 @@ vdj_seq <- ggdraw() + draw_image(paste0(figure_folder, "TCRB_Different_sequencin
 ############################ General parameters #####################################################################
 #####################################################################################################################
 
-gray.colors(9, start = 0, end = 1, rev = FALSE)
-
-brk <- c(0:5, 10, 25, 50)
-labels <- c(as.character(0:4), "5-9", "10-24", "25-49", "50+")
-labels_colors <- c('#FF0000FF','#FF3700FF','#FF4E00FF','#FF6F00FF','#FF8500FF','#FFA600FF','#FFD300FF','#FFFF70FF','#FFFFAFFF')
-labels_colors <- gray.colors(9, start = 0, end = 0.9, rev = FALSE)
+brk <- c(0:4, 10, 25, 50)
+labels <- c(as.character(0:3), "4-9", "10-24", "25-49", "50+")
+# labels_colors <- c('#FF0000FF','#FF3700FF','#FF4E00FF','#FF6F00FF','#FF8500FF','#FFA600FF','#FFD300FF','#FFFF70FF','#FFFFAFFF')
+labels_colors <- gray.colors(8, start = 0, end = 0.99, rev = FALSE)
 
 # find the gene order
 distances_df <- as.matrix(full_distances_df)
@@ -74,7 +73,7 @@ dt2$colname <- factor(dt2$colname, levels = gene_order)
 dt2$value[dt2$value >=50] <- 50
 dt2$value[dt2$value >=25 & dt2$value <50] <- 25
 dt2$value[dt2$value >=10 & dt2$value <25] <- 10
-dt2$value[dt2$value >=5 & dt2$value <10] <- 5
+dt2$value[dt2$value >=4 & dt2$value <10] <- 4
 dt2$value <- factor(dt2$value, levels = brk)
 
 full_trbv_dis_graph <- ggplot(dt2, aes(x = rowname, y = colname, fill = value)) +
@@ -105,7 +104,7 @@ dt2$colname <- factor(dt2$colname, levels = gene_order)
 dt2$value[dt2$value >=50] <- 50
 dt2$value[dt2$value >=25 & dt2$value <50] <- 25
 dt2$value[dt2$value >=10 & dt2$value <25] <- 10
-dt2$value[dt2$value >=5 & dt2$value <10] <- 5
+dt2$value[dt2$value >=4 & dt2$value <10] <- 4
 dt2$value <- factor(dt2$value, levels = brk)
 
 biomed_trbv_dis_graph <- ggplot(dt2, aes(x = rowname, y = colname, fill = value)) +
@@ -136,7 +135,7 @@ dt2$colname <- factor(dt2$colname, levels = gene_order)
 dt2$value[dt2$value >=50] <- 50
 dt2$value[dt2$value >=25 & dt2$value <50] <- 25
 dt2$value[dt2$value >=10 & dt2$value <25] <- 10
-dt2$value[dt2$value >=5 & dt2$value <10] <- 5
+dt2$value[dt2$value >=4 & dt2$value <10] <- 4
 dt2$value <- factor(dt2$value, levels = brk)
 
 adapt_trbv_dis_graph <- ggplot(dt2, aes(x = rowname, y = colname, fill = value)) +
@@ -176,8 +175,8 @@ gene_allele_num_df$Gene <- factor(gene_allele_num_df$Gene, levels = gene_order)
 gene_allele_num_df$sequencing <- factor(gene_allele_num_df$sequencing, levels = c("Full-length", "BIOMED-2", "Adaptive Biotechnologies"))
 
 gene_allele_num_plot <- ggplot(data=gene_allele_num_df, aes(x=Gene, y=Allele_num, fill=sequencing)) +
-  geom_bar(stat="identity", color="black", position=position_dodge())+
-  scale_y_continuous(expand = c(0, 0)) +
+  geom_bar(stat="identity", color="black", position=position_dodge()) +
+  scale_y_continuous(expand = c(0, 0)) + scale_fill_brewer(palette = "Dark2") +
   xlab("TRBV Genes") + ylab("Number of \n unique sequences") +  labs(fill="Sequencing approach") +
   theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(), 
         panel.background = element_blank(), axis.line = element_line(colour = "black"),
@@ -238,7 +237,7 @@ gene_allele_num_plot <- arrangeGrob(gene_allele_num_plot, top = d_label)
 
 g <- grid.arrange(
   workflow, vdj_seq, distances_graph, mylegend,gene_allele_num_plot,
-  heights = c(10, 10,11,1,5),
+  heights = c(6, 9,11,1,5),
   layout_matrix = rbind(c(1),
                         c(2),
                         c(3),
@@ -246,7 +245,7 @@ g <- grid.arrange(
                         c(5))
 )
 
-ggsave(paste0(figure_folder, "Fig1.pdf"), plot = g, width = 19, height = 25)
+ggsave(paste0(figure_folder, "Fig1.pdf"), plot = g, width = 19, height = 20)
 ggsave(paste0(figure_folder, "Fig1.png"), plot = g, width = 19, height = 15)
 
 
