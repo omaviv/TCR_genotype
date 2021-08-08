@@ -2,6 +2,7 @@ library(dplyr)
 library(tidyr)
 library(ggplot2)
 library(seqinr)
+library(stringr)
 
 #####################################################################################################################
 ############################ Load required files ####################################################################
@@ -46,7 +47,7 @@ v_germ_start_pos$Freq <- v_germ_start_pos$N / sum(v_germ_start_pos$N)
 
 v_germ_start_pos_graph <- ggplot(v_germ_start_pos[v_germ_start_pos$v_ref_start <= 10,], aes(x=as.factor(v_ref_start-43), y=Freq))+
   geom_bar(stat="identity", colour="white") + 
-  ylab("Frequency") + xlab("First coverd position from the TRBV gene reference") +
+  ylab("Frequency") + xlab("First covered position from the TRBV gene reference") +
   theme_classic()
 v_germ_start_pos_graph
 

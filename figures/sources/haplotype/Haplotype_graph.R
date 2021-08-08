@@ -623,7 +623,7 @@ hapHeatmap <- function(hap_table, chain = c("IGH", "IGK", "IGL", "TRB"), gene_so
   height <- samples_n * 0.1 + 10 + nrow(m2)*0.2 + short_reads_rows*0.4 # number of samples, number of rows in legend, number of rows in bottom annotation
   width <- genes_n * 0.3 + 5 # numer of genes
   size_text = nrow(upper_m)/(height*width)+0.5 # text size for heatmap annoations
-  size_text_leg = ncol(m2)/(width*longest_allele)+1 # text size for legend annotations
+  size_text_leg = ncol(m2)/(width*longest_allele)+1.5 # text size for legend annotations
   
   if(!is.null(file)) pdf(file, onefile = F, width = width, height = height, family = "serif")
   # plot layout
@@ -637,13 +637,13 @@ hapHeatmap <- function(hap_table, chain = c("IGH", "IGK", "IGL", "TRB"), gene_so
   # add grid lines for genes
   grid(lwd=1,nx = genes_n,ny=0,col = "white",lty = 1)
   # add axis annotations
-  axis(3,(0:(genes_n-1))/genes_n+6/(12*genes_n),names(gene_loc),las=3) # top
-  axis(1,(0:(genes_n-1))/genes_n+6/(12*genes_n),names(gene_loc),las=3) # bottom
-  title(gsub('_','*',hapBy_cols[1]), adj = 0.5)
+  axis(3,(0:(genes_n-1))/genes_n+6/(12*genes_n),names(gene_loc),las=3, cex.axis=1.2) # top
+  axis(1,(0:(genes_n-1))/genes_n+6/(12*genes_n),names(gene_loc),las=3, cex.axis=1.2) # bottom
+  title(gsub('_','*',hapBy_cols[1]), adj = 0.5, cex.main=2)
   # color y tick labels if supplied
   colors <- "black"
   if(!is.null(color_y)) colors <- color_y[rownames(upper_m)]
-  Map(axis, side=2, at=(0:(samples_n-1))/(samples_n-1), col.axis=colors, labels=rownames(upper_m), lwd=0, las=1, cex.axis=0.8) #left
+  Map(axis, side=2, at=(0:(samples_n-1))/(samples_n-1), col.axis=colors, labels=rownames(upper_m), lwd=0, las=1, cex.axis=1.2) #left
   axis(2,at=(0:(samples_n-1))/(samples_n-1),labels=FALSE)
   
   
@@ -680,13 +680,13 @@ hapHeatmap <- function(hap_table, chain = c("IGH", "IGK", "IGL", "TRB"), gene_so
   # add grid lines for genes
   grid(lwd=1,nx = genes_n,ny=0,col = "white",lty = 1)
   # add axis annotations
-  axis(3,(0:(genes_n-1))/genes_n+6/(12*genes_n),names(gene_loc),las=3) # top
-  axis(1,(0:(genes_n-1))/genes_n+6/(12*genes_n),names(gene_loc),las=3) # bottom
-  title(gsub('_','*',hapBy_cols[2]), adj = 0.5)
+  axis(3,(0:(genes_n-1))/genes_n+6/(12*genes_n),names(gene_loc),las=3, cex.axis=1.2) # top
+  axis(1,(0:(genes_n-1))/genes_n+6/(12*genes_n),names(gene_loc),las=3, cex.axis=1.2) # bottom
+  title(gsub('_','*',hapBy_cols[2]), adj = 0.5, cex.main=2)
   # color y tick labels if supplied
   colors <- "black"
   if(!is.null(color_y)) colors <- color_y[rownames(lower_m)]
-  Map(axis, side=2, at=(0:(samples_n-1))/(samples_n-1), col.axis=colors, labels=rownames(lower_m), lwd=0, las=1, cex.axis=0.8) #left
+  Map(axis, side=2, at=(0:(samples_n-1))/(samples_n-1), col.axis=colors, labels=rownames(lower_m), lwd=0, las=1, cex.axis=1.2) #left
   axis(2,at=(0:(samples_n-1))/(samples_n-1),labels=FALSE)
   
   # draw lines for low lk values
