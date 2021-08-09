@@ -105,7 +105,8 @@ trbj_usage_graph <- ggplot(trbj_usage, aes(x=gsub("TRB", "", j_gene), y=usage, f
         axis.text.y = element_text(size=12), 
         axis.title = element_text(size=16), legend.title = element_text(size=16), legend.text = element_text(size=14),
         panel.background = element_blank(), axis.line = element_line(colour = "black"),
-        legend.position=c(0.5,0.9), axis.text.x=element_text(color=gene_colors, size=10))
+        legend.position=c(0.5,0.9), axis.text.x=element_text(color=gene_colors, size=10),
+        legend.background = element_blank(), legend.box.background = element_rect(colour = "black", fill = "grey90"))
 
 
 
@@ -459,16 +460,18 @@ d1_j2_pairing_graph <- arrangeGrob(d1_j2_pairing_graph, top = f_label)
 
 g <- grid.arrange(
   grobs = list(trbdj_usage_graph, trbj_family_usage_graph, trbj_norm_usage_graph, d2_j2_pairing_graph,
-               d1_j_pairing_graph, d1_j2_pairing_graph, top_legend),
-  heights = c(0.3,0.3,0.3,0.05),
+               d1_j_pairing_graph, d1_j2_pairing_graph),
+  heights = c(0.3,0.3,0.3, 0.03),
   nrow = 4,
+  bottom = top_legend,
+  padding = unit(2, "line"),
   layout_matrix = rbind(
     c(1, 4),
     c(2, 5),
     c(3, 6), 
-    c(7))
+    c())
 )
 
-ggsave(paste0(figure_folder, "D_J_usage_out_frame_len_8.pdf"), g, height = 10, width = 12)
+ggsave(paste0(figure_folder, "D_J_usage_out_frame_len_8.pdf"), g, height = 11, width = 13)
 # ggsave(paste0(figure_folder, "D_J_usage_out_frame_len_8.png"), g, height = 10, width = 12)
 
