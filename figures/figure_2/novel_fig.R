@@ -423,7 +423,7 @@ full_trbv <- full_trbv[!full_trbv$GENE %in% PSEUDO[["TRB"]],]
 full_gene_allele_num_plot <- ggplot(data=full_trbv[order(full_trbv$allele_number, decreasing = T),], aes(x=GENE, y=allele_number, fill=novel, group=group)) +
   geom_bar(width = 0.8, stat="identity", color="black", position=position_dodge())+
   scale_y_continuous(expand = c(0, 0), breaks = seq(0, max(full_trbv$allele_number))) +
-  scale_fill_manual(values=c("darkred", "firebrick3", "cyan4")) + 
+  scale_fill_brewer(palette = "Dark2") + 
   xlab("TRBV Genes") + ylab("Number of alleles") + ggtitle("DS1 & DS2") + 
   guides(fill=guide_legend("", nrow = 1)) +
   theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(), 
@@ -493,7 +493,7 @@ biomed_trbv$allele_number <- as.integer(biomed_trbv$allele_number)
 biomed_gene_allele_num_plot <- ggplot(data=biomed_trbv[order(biomed_trbv$allele_number, decreasing = T),], aes(x=GENE, y=allele_number, fill=novel, group=group)) +
   geom_bar(width = 0.8, stat="identity", color="black", position=position_dodge())+
   scale_y_continuous(expand = c(0, 0)) +
-  scale_fill_manual(values=c("darkred", "firebrick3", "cyan4")) + 
+  scale_fill_brewer(palette = "Dark2") + 
   xlab("TRBV Genes") + ylab("Number of alleles") + ggtitle("DS3") + 
   guides(fill=guide_legend("", nrow = 1)) +
   theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(), 
@@ -559,7 +559,7 @@ adaptive_trbv$allele_number <- as.integer(adaptive_trbv$allele_number)
 adaptive_gene_allele_num_plot <- ggplot(data=adaptive_trbv[order(adaptive_trbv$allele_number, decreasing = T),], aes(x=GENE, y=allele_number, fill=novel, group=group)) +
   geom_bar(width = 0.8, stat="identity", color="black", position=position_dodge())+
   scale_y_continuous(expand = c(0, 0)) +
-  scale_fill_manual(values=c("darkred", "firebrick3", "cyan4")) + 
+  scale_fill_brewer(palette = "Dark2") + 
   xlab("TRBV Genes") + ylab("Number of alleles") + ggtitle("DS4") + 
   guides(fill=guide_legend("", nrow = 1)) +
   theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(), 

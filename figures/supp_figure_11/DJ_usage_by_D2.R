@@ -75,7 +75,7 @@ d_usage_df <- merge(d_usage_df, total_d)
 d_usage_df$usage <- d_usage_df$N / d_usage_df$total
 
 d2_usage_graph <- ggplot(d_usage_df, aes(x=gsub("TRB", "", d_gene), y=usage, fill = d2_geno)) + 
-  geom_boxplot(outlier.size = 0.4) + 
+  geom_boxplot(outlier.size = 0.4) + scale_fill_brewer(palette = "Dark2") +
   scale_y_continuous(expand = c(0, 0), limits = c(0, max(d_usage_df$usage) *1.1)) +
   ylab("Usage") + xlab("") +
   labs(fill="TRBD2 genotype") +
@@ -97,7 +97,7 @@ trbj_usage <- merge(trbj_usage, trbj_total_usage)
 trbj_usage$usage <- trbj_usage$N / trbj_usage$total
 
 trbj_usage_graph <- ggplot(trbj_usage, aes(x=gsub("TRB", "", j_gene), y=usage, fill = d2_geno)) + 
-  geom_boxplot(outlier.size = 0.4) + 
+  geom_boxplot(outlier.size = 0.4) + scale_fill_brewer(palette = "Dark2") +
   scale_y_continuous(expand = c(0, 0), limits = c(0, max(trbj_usage$usage) *1.1)) +
   ylab("Usage") + xlab("TRBJ gene") +
   guides(fill=guide_legend("TRBD2 genotype", nrow = 1)) +
@@ -148,7 +148,7 @@ p.values <- sapply(split(temp, temp$j_family), function(x){wilcox.test(total_usa
 p.values <- p.adjust(p.values, method = "bonferroni")
 
 trbj_family_usage_graph <- ggplot(trbj_family_usage, aes(x=gsub("TRB", "", j_family), y=total_usage, fill = d2_geno)) + 
-  geom_boxplot(outlier.size = 0.4) + 
+  geom_boxplot(outlier.size = 0.4) + scale_fill_brewer(palette = "Dark2") +
   scale_y_continuous(expand = c(0, 0), limits = c(0, max(trbj_family_usage$total_usage) *1.3)) +
   ylab("Usage") + xlab("TRBJ family") +
   guides(fill=guide_legend("TRBD2 genotype", nrow = 1)) +
@@ -189,7 +189,7 @@ p.values <- p.adjust(p.values, method = "bonferroni")
 
 trbj1_usage <- trbj_usage[grepl("J1", trbj_usage$j_gene),]
 trbj1_usage_graph <- ggplot(trbj1_usage, aes(x=gsub("TRB", "", j_gene), y=norm_usage, fill = d2_geno)) + 
-  geom_boxplot(outlier.size = 0.4) + 
+  geom_boxplot(outlier.size = 0.4) + scale_fill_brewer(palette = "Dark2") +
   scale_y_continuous(expand = c(0, 0), limits = c(0, max(trbj_usage$norm_usage) *1.1)) +
   ylab("P(TRBJ1-N)") + xlab("TRBJ1 gene") +
   guides(fill=guide_legend("TRBD2 genotype", nrow = 1)) +
@@ -211,7 +211,7 @@ trbj1_usage_graph <- trbj1_usage_graph + geom_signif(y_position = y.values, xmin
 
 trbj2_usage <- trbj_usage[grepl("J2", trbj_usage$j_gene),]
 trbj2_usage_graph <- ggplot(trbj2_usage, aes(x=gsub("TRB", "", j_gene), y=norm_usage, fill = d2_geno)) + 
-  geom_boxplot(outlier.size = 0.4) + 
+  geom_boxplot(outlier.size = 0.4) + scale_fill_brewer(palette = "Dark2") +
   scale_y_continuous(expand = c(0, 0), limits = c(0, max(trbj_usage$norm_usage) *1.1)) +
   ylab("P(TRBJ2-N)") + xlab("TRBJ2 gene") +
   guides(fill=guide_legend("TRBD2 genotype", nrow = 1)) +
@@ -255,7 +255,7 @@ d2_j2_pairing$j_gene <- gsub("TRB", "", d2_j2_pairing$j_gene)
 d2_j2_pairing <- d2_j2_pairing[!grepl(",|P", d2_j2_pairing$j_gene),]
 
 d2_j2_pairing_graph <- ggplot(d2_j2_pairing, aes(x=j_gene, y=frac)) + 
-  geom_boxplot(aes(fill=d2_geno))+
+  geom_boxplot(aes(fill=d2_geno)) + scale_fill_brewer(palette = "Dark2") +
   scale_y_continuous(expand = c(0, 0), limits = c(0, max(d2_j2_pairing$frac) *1.1)) +
   xlab("TRBJ2 gene") + ylab("P(TRBJ2-N|TRBD2)") + 
   guides(fill=guide_legend("TRBD2 genotype")) +
@@ -293,7 +293,7 @@ d1_j_fam_pairing$frac <- d1_j_fam_pairing$number_of_comb / d1_j_fam_pairing$tota
 d1_j_fam_pairing <- d1_j_fam_pairing[!grepl(",", d1_j_fam_pairing$j_family),]
 
 d1_j_fam_pairing_graph <- ggplot(d1_j_fam_pairing, aes(x=gsub("TRB", "", j_family), y=frac)) + 
-  geom_boxplot(aes(fill=d2_geno))+
+  geom_boxplot(aes(fill=d2_geno)) + scale_fill_brewer(palette = "Dark2") +
   scale_y_continuous(expand = c(0, 0), limits = c(0, max(d1_j_fam_pairing$frac) *1.1)) +
   xlab("TRBJ family") + ylab("P(TRBJ|TRBD1)") + 
   guides(fill=guide_legend("TRBD2 genotype")) +
@@ -329,7 +329,7 @@ d1_j_pairing$j_gene <- gsub("TRB", "", d1_j_pairing$j_gene)
 d1_j_pairing <- d1_j_pairing[!grepl(",|P", d1_j_pairing$j_gene),]
 
 d1_j_pairing_graph <- ggplot(d1_j_pairing, aes(x=j_gene, y=frac)) + 
-  geom_boxplot(aes(fill=d2_geno))+
+  geom_boxplot(aes(fill=d2_geno)) + scale_fill_brewer(palette = "Dark2") +
   scale_y_continuous(expand = c(0, 0), limits = c(0, max(d1_j_pairing$frac) *1.1)) +
   guides(fill=guide_legend("TRBD2 genotype")) +
   xlab("TRBJ gene") + ylab("P(TRBJ1/2-N|TRBD1)") + 
@@ -366,7 +366,7 @@ d1_j2_pairing$j_gene <- gsub("TRB", "", d1_j2_pairing$j_gene)
 d1_j2_pairing <- d1_j2_pairing[!grepl(",|P", d1_j2_pairing$j_gene),]
 
 d1_j2_pairing_graph <- ggplot(d1_j2_pairing[!grepl(",", d1_j2_pairing$j_gene),], aes(x=j_gene, y=frac)) + 
-  geom_boxplot(aes(fill=d2_geno))+
+  geom_boxplot(aes(fill=d2_geno)) + scale_fill_brewer(palette = "Dark2") +
   xlab("TRBJ2 gene") + ylab("P(TRBJ2-N|TRBD1)") + 
   scale_y_continuous(expand = c(0, 0), limits = c(0, max(d1_j2_pairing$frac) *1.1)) +
   guides(fill=guide_legend("TRBD2 genotype")) +
