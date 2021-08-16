@@ -140,7 +140,7 @@ dt2$value <- factor(dt2$value, levels = brk)
 
 adapt_trbv_dis_graph <- ggplot(dt2, aes(x = rowname, y = colname, fill = value)) +
   geom_tile()+ scale_fill_manual(values = labels_colors, breaks = brk, labels = labels, drop = FALSE) + 
-  xlab("TRBV Genes") + ylab("TRBV Genes") +  labs(fill="Distance") +
+  xlab("TRBV Genes") + ylab("TRBV Genes") + labs(fill="Minimum global alignment score between the closest two alleles:  ") +
   theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(), 
         panel.background = element_blank(), axis.line = element_line(colour = "black"),
         axis.text.x = element_text(size=8, angle = 90, vjust = 0.5), axis.text.y = element_text(size=8),
