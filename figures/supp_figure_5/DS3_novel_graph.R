@@ -45,9 +45,12 @@ Repeated_Read <- function(x,seq){
 
 
 genotypes <- genotypes[!grepl("[a-d]$", genotypes$SUBJECT),]
+genotypes <- genotypes[!grepl("hem", genotypes$SUBJECT),]
+
 genotypes <- genotypes[!genotypes$GENE %in% PSEUDO[["TRB"]],]
 
 novel_appearance_df <- novel_appearance_df[!grepl("[a-d]$", novel_appearance_df$subject),]
+novel_appearance_df <- novel_appearance_df[!grepl("hem", novel_appearance_df$subject),]
 novel_appearance_df$gene <- sapply(strsplit(novel_appearance_df$novel_allele, "*", fixed = T), "[", 1)
 novel_appearance_df <- novel_appearance_df[!novel_appearance_df$gene %in% PSEUDO[["TRB"]],]
 # novel_appearance_df <- novel_appearance_df[novel_appearance_df$gene_single_allele_assignments > 30,]
@@ -432,5 +435,5 @@ g <- grid.arrange(grobs = list(low_freq_novel_plot, high_freq_novel_plot, leg_pl
                                         c(2,2,2,NA)))
 
 
-ggsave(paste0(figure_folder, "novel_DS3.pdf"),g, height = 10, width = 16)
+ggsave(paste0(figure_folder, "novel_DS3_without_hem.pdf"),g, height = 10, width = 16)
 

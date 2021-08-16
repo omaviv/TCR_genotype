@@ -71,7 +71,7 @@ D2_HOMO01_BOUND <- (D2_01_HOMO_HETERO_BOUND + mean(D2_01_HOMO_FREQ)) / 2
 #####################################################################################################################
 
 BIOMED2_ALL_GENO <- DS3_genotypes[!grepl("[a-d]$", DS3_genotypes$SUBJECT),]
-# BIOMED2_ALL_GENO <- BIOMED2_ALL_GENO[!grepl("hem", BIOMED2_ALL_GENO$SUBJECT),]
+BIOMED2_ALL_GENO <- BIOMED2_ALL_GENO[!grepl("hem", BIOMED2_ALL_GENO$SUBJECT),]
 BIOMED2_GENO_TRBD2 <- BIOMED2_GENO_TRBD2[BIOMED2_GENO_TRBD2$FREQ_01 < D2_HOMO02_BOUND |
                                            (BIOMED2_GENO_TRBD2$FREQ_01 > D2_HETERO_1_BOUND & BIOMED2_GENO_TRBD2$FREQ_01 < D2_HETERO_2_BOUND)|
                                            BIOMED2_GENO_TRBD2$FREQ_01 > D2_HOMO01_BOUND,]
@@ -118,6 +118,6 @@ biomed2_j16_d2_relation_graph <- ggplot(BIOMED2_TRBJ1_6_TRBD2, aes(x = D2_GENO, 
         panel.background = element_blank(), axis.line = element_line(colour = "black"),
         axis.text = element_text(size=8))
 
-ggsave(paste0(figure_folder, "BIOMED2_D2_J1_6_RELATION.pdf"), biomed2_j16_d2_relation_graph)
+ggsave(paste0(figure_folder, "BIOMED2_D2_J1_6_RELATION_without_hem.pdf"), biomed2_j16_d2_relation_graph)
 # ggsave(paste0(figure_folder, "BIOMED2_D2_J1_6_RELATION.png"), biomed2_j16_d2_relation_graph)
 

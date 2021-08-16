@@ -126,7 +126,7 @@ adapt_d2_error_graph <- arrangeGrob(adapt_d2_error_graph, top = title.grob)
 
 BIOMED2_GENO_TRBD2 <- DS3_genotypes[DS3_genotypes$GENE=="TRBD2",]
 BIOMED2_GENO_TRBD2 <- BIOMED2_GENO_TRBD2[!grepl("[a-d]$", BIOMED2_GENO_TRBD2$SUBJECT),]
-# BIOMED2_GENO_TRBD2 <- BIOMED2_GENO_TRBD2[!grepl("HD", BIOMED2_GENO_TRBD2$SUBJECT),]
+BIOMED2_GENO_TRBD2 <- BIOMED2_GENO_TRBD2[!grepl("hem", BIOMED2_GENO_TRBD2$SUBJECT),]
 
 BIOMED2_GENO_TRBD2 <- separate(BIOMED2_GENO_TRBD2, "ALLELES", paste("ALLELES", 1:2, sep = "_"), sep = ",")
 BIOMED2_GENO_TRBD2 <- separate(BIOMED2_GENO_TRBD2, "COUNTS", paste("COUNTS", 1:2, sep = "_"), sep = ",")

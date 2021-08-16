@@ -21,6 +21,7 @@ genotypes <- read.delim(paste0(required_files_folder, "BIOMED2_All_Genotypes.tab
 
 # read the merged genotype file
 genotypes <- genotypes[!grepl("[a-d]$", genotypes$SUBJECT),]
+genotypes <- genotypes[!grepl("hem", genotypes$SUBJECT),]
 genotypes <- genotypes[genotypes$K_DIFF >= 3,]
 genotypes$GENOTYPED_ALLELES[grepl("Del", genotypes$GENOTYPED_ALLELES)] <- "Del"
 
@@ -48,16 +49,16 @@ for (i in 1:(length(genes))) {
   }
 }
 
-# remove genes that the maximum square frequency of one of its alleles is above the threshold 
-max_allele_homozygous_dis_threshold <- 0.9
-genes2remove <- c()
-same_genes <- allele_relations[allele_relations$GENE.x == allele_relations$GENE.y,]
-for (gene in genes) {
-  temp <- same_genes[same_genes$GENE.x == gene,]
-  if (max(temp$FREQ) >= max_allele_homozygous_dis_threshold) {
-    genes2remove <- c(genes2remove, gene)
-  }
-}
+# # remove genes that the maximum square frequency of one of its alleles is above the threshold 
+# max_allele_homozygous_dis_threshold <- 0.9
+# genes2remove <- c()
+# same_genes <- allele_relations[allele_relations$GENE.x == allele_relations$GENE.y,]
+# for (gene in genes) {
+#   temp <- same_genes[same_genes$GENE.x == gene,]
+#   if (max(temp$FREQ) >= max_allele_homozygous_dis_threshold) {
+#     genes2remove <- c(genes2remove, gene)
+#   }
+# }
 
 allele_relations <- allele_relations[!(allele_relations$GENE.x %in% genes2remove) &
                                        !(allele_relations$GENE.y %in% genes2remove),]
@@ -78,4 +79,4 @@ allele_relation_graph <- ggplot(temp, aes(x = GENOTYPE.x, y = GENOTYPE.y, fill =
         axis.text = element_text(size=8), plot.title = element_text(hjust = 0.5))
 
 
-ggsave(paste0(figure_folder, "TRBV4-3_TRBV7-2_allele_relations.pdf"), allele_relation_graph, width = 10, height = 9, limitsize = F)
+ggsave(paste0(figure_folder, "TRBV4-3_TRBV7-2_allele_relations_without_hem.pdf"), allele_relation_graph, width = 10, height = 9, limitsize = F)

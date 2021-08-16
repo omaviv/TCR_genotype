@@ -27,6 +27,12 @@ v_frequencies <- read.delim(paste0(required_files_folder, "BIOMED2_gene_usage.ta
 ###########################  Figure  #############################################################################################################
 ##################################################################################################################################################
 
+# filter out hematological cancer and partial samples
+genotypes <- genotypes[!grepl("[a-d]$", genotypes$SUBJECT),]
+genotypes <- genotypes[!grepl("hem", genotypes$SUBJECT),]
+v_frequencies <- v_frequencies[!grepl("[a-d]$", v_frequencies$SUBJECT),]
+v_frequencies <- v_frequencies[!grepl("hem", v_frequencies$SUBJECT),]
+
 # check allele distribution
 homozygous <- genotypes[!grepl(",", genotypes$GENOTYPED_ALLELES),]
 
@@ -107,7 +113,7 @@ for (i in 1:3) {
   v_usage_graph <- v_usage_graph + geom_signif(y_position = y.values[i], xmin = 1:length(TRBV_LOC) + xmin_space[i], xmax = 1:length(TRBV_LOC) + xmax_space[i], annotations = labels, textsize = 4)
 }
 
-ggsave(paste0(figure_folder, "TRBV7-2_partitial.pdf"), v_usage_graph, height = 8, width = 14)
+ggsave(paste0(figure_folder, "TRBV7-2_partitial_without_hem.pdf"), v_usage_graph, height = 8, width = 14)
 # ggsave(paste0(figure_folder, "TRBV7-2_partitial.png"), v_usage_graph, height = 8, width = 14)
 
 
