@@ -40,8 +40,8 @@ max_snp_position <- 316
 # undocumented_alleles_2_ignore <- c()
 undocumented_alleles_2_ignore <- c("TRBV13*01_A170T", "TRBV13*01_T158C", "TRBV10-3*02_C225G", "TRBV20-1*01_C142A", "TRBV30*01_A113C", "TRBV6-6*01_C261T",
                                    "TRBV7-9*05_A19G_C256T",
-                                   "TRBV15*bp02_A316C", "TRBV5-4*bp01_C159T", "TRBV6-6*bp03_G216C", "TRBV6-6*bp03_T201C_A202C_G216C", "TRBV6-6*bp03_T231C_C261T",
-                                   "TRBV15*bp02_G153T", "TRBV19*bp01_T310C_G311C_C314T", "TRBV5-4*bp01_G205A", "TRBV5-5*bp01_G232A", 
+                                   # "TRBV15*bp02_A316C", "TRBV5-4*bp01_C159T", "TRBV6-6*bp03_G216C", "TRBV6-6*bp03_T201C_A202C_G216C", "TRBV6-6*bp03_T231C_C261T",
+                                   # "TRBV15*bp02_G153T", "TRBV19*bp01_T310C_G311C_C314T", "TRBV5-4*bp01_G205A", "TRBV5-5*bp01_G232A", 
                                    "TRBV20-1*ap02_T310G", "TRBV7-8*ap01_T295C", "TRBV7-4*ap01_G291C_A297G", "TRBV7-4*ap01_G291C_A297G_C314T", "TRBV7-9*ap01_G313T")
 
 ######################## Environment & tools 
@@ -357,15 +357,34 @@ file.copy(TRBV_ref, paste0(output_path,"/", SAMP,"/database/V.fasta"), overwrite
 file.copy(TRBD_ref, paste0(output_path,"/", SAMP,"/database/D.fasta"), overwrite = T)
 file.copy(TRBJ_ref, paste0(output_path,"/", SAMP,"/database/J.fasta"), overwrite = T)
 
+
 system(paste0(igdiscover_env," && cd ",pathname,"; ",
-              paste0('igdiscover igblast --threads 1 --no-cache',
-                     ' --pathig ', igblast_output,
-                     ' database ', igblast_input,
-                     " > ", SAMP, "_igdiscover-pass.tab")))
+              'igdiscover igblast --threads 1 --no-cache',
+              ' --pathig ', igblast_output,
+              ' database ', igblast_input,
+              " > ", SAMP, "_igdiscover-pass.tab"))
 
 data_igdiscover <- read.delim(paste0(SAMP, "_igdiscover-pass.tab"), sep = '\t', header = T, stringsAsFactors = F)
 data_igdiscover$sequence_id <- sapply(data_igdiscover$name, function(x) strsplit(x,"|",fixed=T)[[1]][1])
 data_igdiscover <- data_igdiscover[data_igdiscover$sequence_id %in% DATA$sequence_id,]
+
+ig_ind <- 1
+for (seq_id in data_igdiscover$sequence_id) {
+  seq_ind <- which(DATA$sequence_id==seq_id)
+  cdr3 <- DATA$junction[[seq_ind]]
+  if (str_length(cdr3) > 6) {
+    cdr3 <- substr(cdr3, 4, str_length(cdr3)-3)
+    cdr3_aa <- DATA$junction_aa[[seq_ind]]
+    cdr3_aa <- substr(cdr3_aa, 2, str_length(cdr3_aa)-1)
+  } else {
+    cdr3 <- ""
+    cdr3_aa <- ""
+  }
+  data_igdiscover$CDR3_nt[ig_ind] <- cdr3
+  data_igdiscover$CDR3_aa[ig_ind] <- cdr3_aa
+  ig_ind <- ig_ind + 1
+}
+
 
 write.table(data_igdiscover, paste0(SAMP, "_igdiscover-pass_mut.tab"), sep = "\t")
 
@@ -667,14 +686,14 @@ for (vdj_seq in vdj_seqs) {
     temp <- DATA[vdj_indexes,]
     temp$consensus_count <- as.numeric(temp$consensus_count)
     temp$duplicate_count <- as.numeric(temp$duplicate_count)
-
+    
     DATA <- DATA[-vdj_indexes,]
-
+    
     seq_id_ind <- which.max(temp$consensus_count);
     seq_id <- temp$sequence_id[seq_id_ind]
     seq_id_ind <- vdj_indexes[seq_id_ind]
     sequence <- temp$sequence[seq_id_ind]
-
+    
     conscount <- sum(temp$consensus_count)
     dupcount <- sum(temp$duplicate_count)
     DATA[nrow(DATA)+1,] <- c(sequence, vdj_seq, seq_id, conscount, dupcount)
@@ -942,9 +961,9 @@ for(i in 1:nrow(geno_BV)){
   if (geno_BV$GENOTYPED_ALLELES[i] == "Deletion") {
     next
   }
-
+  
   gene <- geno_BV$gene[i]
-
+  
   alleles <- geno_BV$GENOTYPED_ALLELES[i]
   alleles <- unlist(strsplit(alleles,','))
   IND <- names(TRBV_GERM) %in%  paste(gene,alleles,sep='*')
@@ -1099,20 +1118,20 @@ if (hetero_j16) {
   DATA_J <- DATA_J[!grepl(",", DATA_J$j_call),]
   DATA_J$J_SEQ_LENGTH <- DATA_J$j_sequence_end - DATA_J$j_sequence_start + 1
   DATA_J <- DATA_J[DATA_J$J_SEQ_LENGTH > 10,]
-
+  
   TRBJ1_6_01_REA <- nrow(DATA_J[DATA_J$j_call == "TRBJ1-6*01",])
   total <- nrow(DATA_J)
-
+  
   if ((TRBJ1_6_01_REA / total > 0.3) & (TRBJ1_6_01_REA / total < 0.7)) {
     haplo_j1_6 <- createFullHaplotype(DATA_J,toHap_col = "v_call", hapBy_col = "j_call", chain = "TRB", hapBy = "TRBJ1-6", toHap_GERM = TRBV_GERM, rmPseudo = F)
     haplo_j1_6$TOTAL <- total
-
+    
     if (length(del_genes) > 0) {
       for (gene in del_genes) {
         haplo_j1_6[haplo_j1_6$gene == gene, c(3:5, 9)] <- c("Del", "Del", "Del", 1000)
       }
     }
-
+    
     write.table(haplo_j1_6, file = paste0(sample_path, SAMP, "_haplo_J1_6.tab"), quote = F, row.names = F, sep = "\t")
   }
 }
@@ -1124,12 +1143,12 @@ if (hetero_d2) {
   DATA_D_geno <- DATA[(!grepl(pattern = ',',DATA$d_call) & DATA$d_call!='None') & (DATA$d_germline_length >= 9),]
   DATA_D_geno <- DATA_D_geno[complete.cases(DATA_D_geno$sequence_id),]
   DATA_D_geno <- DATA_D_geno[grepl("D2", DATA_D_geno$d_call),]
-
+  
   # filter by zero mutations over the D segment
   # extract d sequence in the direct orientation
   DATA_D_reg <- DATA_D_geno[DATA_D_geno$d_germline_start < DATA_D_geno$d_germline_end,]
   DATA_D_reg$d_seq <- substr(DATA_D_reg$sequence, DATA_D_reg$d_sequence_start, DATA_D_reg$d_sequence_end)
-
+  
   # extract convert d sequence in the inverted orientation to the direct orientation
   DATA_D_inv <- DATA_D_geno[DATA_D_geno$d_germline_start > DATA_D_geno$d_germline_end,]
   DATA_D_inv$d_seq <- substr(DATA_D_inv$sequence, DATA_D_inv$d_sequence_start, DATA_D_inv$d_sequence_end)
@@ -1139,13 +1158,13 @@ if (hetero_d2) {
   DATA_D_inv$d_seq <- gsub("G", "c", DATA_D_inv$d_seq)
   DATA_D_inv$d_seq <- gsub("C", "g", DATA_D_inv$d_seq)
   DATA_D_inv$d_seq <- toupper(DATA_D_inv$d_seq)
-
+  
   d_germ_end <- DATA_D_inv$d_germline_start
   DATA_D_inv$d_germline_start <- DATA_D_inv$d_germline_end
   DATA_D_inv$d_germline_end <- d_germ_end
-
+  
   DATA_D_geno <- rbind(DATA_D_reg, DATA_D_inv)
-
+  
   DATA_D_geno$mut_d <- unlist(lapply(1:nrow(DATA_D_geno), function(i) {
     mut <- 0;
     row_seq <- unlist(strsplit(DATA_D_geno$d_seq[[i]], ""));
@@ -1157,21 +1176,21 @@ if (hetero_d2) {
     }
     mut
   }))
-
+  
   DATA_D_geno <- DATA_D_geno[DATA_D_geno$mut_d == 0,]
   TRBD2_01_REA <- nrow(DATA_D_geno[DATA_D_geno$d_call == "TRBD2*01",])
   total <- nrow(DATA_D_geno)
-
+  
   if ((TRBD2_01_REA / total > 0.3) & (TRBD2_01_REA / total < 0.7)) {
     haplo_d2 <- createFullHaplotype(DATA_D_geno, toHap_col = "v_call", hapBy_col = "d_call", chain = "TRB", hapBy = "TRBD2", toHap_GERM = TRBV_GERM, rmPseudo = F, kThreshDel = 5)
     haplo_d2$TOTAL <- total
-
+    
     if (length(del_genes) > 0) {
       for (gene in del_genes) {
         haplo_d2[haplo_d2$gene == gene, c(3:5, 9)] <- c("Del", "Del", "Del", 1000)
       }
     }
-
+    
     write.table(haplo_d2, file = paste0(sample_path, SAMP, "_haplo_D2.tab"), quote = F, row.names = F, sep = "\t")
   }
 }

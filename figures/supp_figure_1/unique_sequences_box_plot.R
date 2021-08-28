@@ -47,6 +47,25 @@ for (subject in all_subjects) {
 
 ds1_unique_seq_df <- merge(ds1_unique_seq_df, novel_per_sub, by.x = "subject", by.y="SUBJECT")
 
-plot(ds1_unique_seq_df$unique_reads, ds1_unique_seq_df$N)
+seq_num_novel_fig <- ggplot(ds1_unique_seq_df, aes(x=unique_reads, y=N)) +
+  geom_point() +
+  geom_smooth(method = "lm") +
+  ylab("Number of undocumented alleles") + xlab("Number of unique sequences")+
+  theme(panel.grid.major = element_blank(), panel.grid.minor = element_blank(), 
+        panel.background = element_blank(), axis.line = element_line(colour = "black"),
+        text = element_text(size=16), axis.text = element_text(size = 16))
+
+ggsave(paste0(figure_folder, "unique_sequences_novel_corr.png"), seq_num_novel_fig)
 
 
+ds1_unique_seq_df$num_novel <- "3<="
+ds1_unique_seq_df$num_novel[ds1_unique_seq_df$N < 3] <- "<3"
+ds1_unique_seq_df$num_novel <- as.factor(ds1_unique_seq_df$num_novel)
+
+ds1_unique_seq_df$n_reads <- "40,000<="
+ds1_unique_seq_df$n_reads[ds1_unique_seq_df$unique_reads < 50000] <- "<40,000"
+ds1_unique_seq_df$n_reads <- as.factor(ds1_unique_seq_df$n_reads)
+
+fisher.test(ds1_unique_seq_df$n_reads, ds1_unique_seq_df$num_novel)
+
+fisher.test(as.matrix(table(select(ds1_unique_seq_df, "n_reads", "num_novel"))))

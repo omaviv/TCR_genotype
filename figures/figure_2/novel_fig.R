@@ -77,18 +77,19 @@ adaptive_novel_df$FULL_ALLELE_NAME <- gsub("TRBV6-56", "TRBV6-5/TRBV6-6", adapti
 
 
 # remove repeated reads, potential sequencing error
-Repeated_Read <- function(x,seq){
+Repeated_Read <- function(x,novel_seq){
   NT <- as.numeric(gsub("[A-Z]",'',x))
   SNPS <- gsub("[0-9]+([[:alpha:]]*).*",'\\1',x)
   SNP <- strsplit(SNPS,"")[[1]][2]
   OR_SNP <- strsplit(SNPS,"")[[1]][1]
-  seq <- c(substr(seq,(NT),(NT+3)),substr(seq,(NT-1),(NT+2)),
-           substr(seq,(NT-2),(NT+1)),substr(seq,(NT-3),(NT)))
+  substr(novel_seq, NT, NT) <- OR_SNP 
+  novel_seq <- c(substr(novel_seq,(NT),(NT+3)),substr(novel_seq,(NT-1),(NT+2)),
+                 substr(novel_seq,(NT-2),(NT+1)),substr(novel_seq,(NT-3),(NT)))
   PAT <- paste0(c(paste0(c(rep(SNP,3),OR_SNP),collapse = ""),
                   paste0(c(rep(SNP,2),OR_SNP,SNP),collapse = ""),
                   paste0(c(SNP,OR_SNP,rep(SNP,2)),collapse = ""),
                   paste0(c(OR_SNP,rep(SNP,3)),collapse = "")), collapse = "|")
-  if( any(grepl(PAT,seq))) return(paste0(gsub(SNP,"X",gsub(OR_SNP,"z",seq[grepl(PAT,seq)])),collapse = "^"))
+  if( any(grepl(PAT,novel_seq))) return(paste0(gsub(SNP,"X",gsub(OR_SNP,"z",novel_seq[grepl(PAT,novel_seq)])),collapse = "^"))
   else return(NA)
 }
 
@@ -165,7 +166,13 @@ print("check RR")
 novel_checks$SNP_XXXX <- unlist(sapply(1:nrow(novel_checks), function(i){
   subs <- strsplit(novel_checks$ALLELE[i],'_')[[1]][-1]
   allele <- strsplit(novel_checks$ALLELE[i],'_')[[1]][1]
-  RR <- sapply(subs,Repeated_Read,seq=TRBV_GERM[[allele]],simplify = F)
+  novel_seq <- TRBV_GERM[[allele]]
+  for (snp in subs) {
+    pos <- as.numeric(str_extract(snp, "[0-9]+"))
+    new_nt <- str_extract(snp, "[A-Z]$")
+    substr(novel_seq, pos, pos) <- new_nt
+  }
+  RR <- sapply(subs,Repeated_Read,novel_seq=novel_seq,simplify = F)
   if(sum(!is.na(RR))!=0) paste0("Repeated Read: ", paste0(names(RR),"-",paste0(RR,collapse = '^'),collapse = "/"),";")
   else return("")
 }))
