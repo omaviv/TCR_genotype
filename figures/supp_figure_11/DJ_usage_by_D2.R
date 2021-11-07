@@ -20,7 +20,7 @@ references_folder <- paste0(project_folder, "pipeline/fasta_references/")
 load(paste0(project_folder, "pipeline/sysdata.rda"))
 
 pairing_df <- read.delim(paste0(required_files_folder, "DS4_all_dj_pairs.tab"), sep = "\t", stringsAsFactors = F)
-genotypes <- read.delim(paste0(required_files_folder, "Adaptive_All_Genotypes.tab"), sep = "\t", stringsAsFactors = F)
+genotypes <- read.delim(paste0(required_files_folder, "DS4_All_Genotypes.tab"), sep = "\t", stringsAsFactors = F)
 trbj_usage <- read.delim(paste0(required_files_folder, "Adaptive_TRBJ_gene_usage.tab"), header = T, sep = "\t", stringsAsFactors = F)
 
 ##################################################################################################################################################
@@ -473,5 +473,5 @@ g <- grid.arrange(
 )
 
 ggsave(paste0(figure_folder, "D_J_usage_out_frame_len_8.pdf"), g, height = 11, width = 13)
-# ggsave(paste0(figure_folder, "D_J_usage_out_frame_len_8.png"), g, height = 10, width = 12)
+ggsave(paste0(figure_folder, "D_J_usage_out_frame_len_8.png"), g, height = 10, width = 12)
 

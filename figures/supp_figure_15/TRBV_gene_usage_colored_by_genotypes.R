@@ -28,6 +28,7 @@ v_frequencies <- read.delim(paste0(required_files_folder, "BIOMED2_gene_usage.ta
 ##################################################################################################################################################
 
 # filter out hematological cancer and partial samples
+names(genotypes) <- toupper(names(genotypes))
 genotypes <- genotypes[!grepl("[a-d]$", genotypes$SUBJECT),]
 genotypes <- genotypes[!grepl("hem", genotypes$SUBJECT),]
 v_frequencies <- v_frequencies[!grepl("[a-d]$", v_frequencies$SUBJECT),]
@@ -114,6 +115,6 @@ for (i in 1:3) {
 }
 
 ggsave(paste0(figure_folder, "TRBV7-2_partitial_without_hem.pdf"), v_usage_graph, height = 8, width = 14)
-# ggsave(paste0(figure_folder, "TRBV7-2_partitial.png"), v_usage_graph, height = 8, width = 14)
+ggsave(paste0(figure_folder, "TRBV7-2_partitial.png"), v_usage_graph, height = 8, width = 14)
 
 

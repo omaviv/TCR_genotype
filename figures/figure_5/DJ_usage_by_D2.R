@@ -20,7 +20,7 @@ references_folder <- paste0(project_folder, "pipeline/fasta_references/")
 load(paste0(project_folder, "pipeline/sysdata.rda"))
 
 pairing_df <- read.delim(paste0(required_files_folder, "DS4_all_dj_pairs.tab"), sep = "\t", stringsAsFactors = F)
-genotypes <- read.delim(paste0(required_files_folder, "Adaptive_All_Genotypes.tab"), sep = "\t", stringsAsFactors = F)
+genotypes <- read.delim(paste0(required_files_folder, "DS4_All_Genotypes.tab"), sep = "\t", stringsAsFactors = F)
 trbj_usage <- read.delim(paste0(required_files_folder, "Adaptive_TRBJ_gene_usage.tab"), header = T, sep = "\t", stringsAsFactors = F)
 
 ##################################################################################################################################################

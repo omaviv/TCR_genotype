@@ -21,7 +21,9 @@ references_folder <- paste0(project_folder, "pipeline/fasta_references/")
 load(paste0(project_folder, "pipeline/sysdata.rda"))
 
 DS3_genotypes <- read.delim(paste0(required_files_folder, "BIOMED2_All_Genotypes.tab"), header = T, sep = "\t", stringsAsFactors = F)
+names(DS3_genotypes) <- toupper(names(DS3_genotypes))
 DS4_genotypes <- read.delim(paste0(required_files_folder, "Adaptive_All_Genotypes.tab"), header = T, sep = "\t", stringsAsFactors = F)
+names(DS4_genotypes) <- toupper(names(DS4_genotypes))
 
 ##################################################################################################################################
 ############################ Calculate D2 genotype boundaries ####################################################################

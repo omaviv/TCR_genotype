@@ -20,9 +20,11 @@ references_folder <- paste0(project_folder, "pipeline/fasta_references/")
 load(paste0(project_folder, "pipeline/sysdata.rda"))
 
 genotypes <- read.delim(paste0(required_files_folder, "BIOMED2_All_Genotypes.tab"), header = T, sep = "\t", stringsAsFactors = F)
+names(genotypes) <- toupper(names(genotypes))
 novel_appearance_df <- read.delim(paste0(required_files_folder, "DS3_all_novel_occurrences.tab"), header = T, sep = "\t", stringsAsFactors = F)
 TRBV_imgt_ref <- paste0(references_folder, "BIOMED2_TRBV.fasta")
 
+extra_red_alleles <- c("TRBV10-1*bp01_C190A_C195T_A199G")
 #####################################################################################################################
 ###########################  Figure  ################################################################################
 #####################################################################################################################
@@ -174,7 +176,7 @@ colors <- unlist(lapply(low_freq_allele_order, function(allele) {
     return("navy")
   } else if (novel_checks$padded[novel_checks$ALLELE==allele]) {
     return("green4")
-  } else if (novel_checks$unary[novel_checks$ALLELE==allele]) {
+  } else if ((novel_checks$unary[novel_checks$ALLELE==allele]) | (allele %in% extra_red_alleles)) {
     return("red")
   }
   return("black")
@@ -432,15 +434,18 @@ g <- grid.arrange(grobs = list(low_freq_novel_plot, high_freq_novel_plot, leg_pl
                   ylab = "Undocumented pattern alleles",
                   layout_matrix = rbind(c(1,1,1,NA),
                                         c(1,1,1,NA),
-                                        c(1,1,1,NA),
+                                        c(1,1,1,4),
+                                        c(1,1,1,4),
                                         c(1,1,1,4),
                                         c(1,1,1,NA),
+                                        c(1,1,1,3),
                                         c(1,1,1,3),
                                         c(1,1,1,NA),
                                         c(1,1,1,NA),
                                         c(1,1,1,NA),
+                                        c(2,2,2,NA),
                                         c(2,2,2,NA)))
 
 
-ggsave(paste0(figure_folder, "novel_DS3_without_hem.pdf"),g, height = 10, width = 16)
-
+ggsave(paste0(figure_folder, "novel_DS3.pdf"),g, height = 10, width = 16)
+ggsave(paste0(figure_folder, "novel_DS3.png"),g, height = 10, width = 16)

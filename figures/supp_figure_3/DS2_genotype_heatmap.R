@@ -24,7 +24,7 @@ source(paste0(sources_folder, "genotype_heatmap/internal_functions.R"))
 source(paste0(sources_folder, "genotype_heatmap/genoHeatmap.R"))
 
 # load DS1 genotypes after filtering unreliable unknown alleles
-genotypes <- read.delim(paste0(required_files_folder, "Single_cell_TR_filtered_Genotypes.tab"), sep = "\t", stringsAsFactors = F)
+genotypes <- read.delim(paste0(required_files_folder, "Single_cell_TR_Genotypes.tab"), sep = "\t", stringsAsFactors = F)
 
 # Change the names of the collapsed genes
 # TRBV6-23 > TRBV6-2/TRBV6-3

@@ -171,7 +171,6 @@ adaptive_trbv$sequencing <- "Adaptive Biotechnologies"
 
 gene_allele_num_df <- rbind(full_trbv, biomed_trbv, adaptive_trbv)
 gene_allele_num_df$Gene <- gsub("TRB", "", gene_allele_num_df$Gene)
-gene_allele_num_df$Gene <- factor(gene_allele_num_df$Gene, levels = gene_order)
 gene_allele_num_df$sequencing <- factor(gene_allele_num_df$sequencing, levels = c("Full-length", "BIOMED-2", "Adaptive Biotechnologies"))
 
 gene_allele_num_plot <- ggplot(data=gene_allele_num_df, aes(x=Gene, y=Allele_num, fill=sequencing)) +

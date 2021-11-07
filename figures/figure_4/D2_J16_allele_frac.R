@@ -21,7 +21,7 @@ load(paste0(project_folder, "pipeline/sysdata.rda"))
 
 DS1_genotypes <- read.delim(paste0(required_files_folder, "HCV_Genotypes_const_2.tab"), header = T, sep = "\t", stringsAsFactors = F)
 DS3_genotypes <- read.delim(paste0(required_files_folder, "BIOMED2_All_Genotypes.tab"), header = T, sep = "\t", stringsAsFactors = F)
-DS4_genotypes <- read.delim(paste0(required_files_folder, "Adaptive_All_Genotypes.tab"), header = T, sep = "\t", stringsAsFactors = F)
+DS4_genotypes <- read.delim(paste0(required_files_folder, "DS4_All_Genotypes.tab"), header = T, sep = "\t", stringsAsFactors = F)
 
 
 ##################################################################################################################################
@@ -124,6 +124,7 @@ adapt_d2_error_graph <- arrangeGrob(adapt_d2_error_graph, top = title.grob)
 ############################ DS3 (Cancer) TRBD2 ERROR GRAPH #########################################################################
 ##################################################################################################################################
 
+names(DS3_genotypes) <- toupper(names(DS3_genotypes))
 BIOMED2_GENO_TRBD2 <- DS3_genotypes[DS3_genotypes$GENE=="TRBD2",]
 BIOMED2_GENO_TRBD2 <- BIOMED2_GENO_TRBD2[!grepl("[a-d]$", BIOMED2_GENO_TRBD2$SUBJECT),]
 BIOMED2_GENO_TRBD2 <- BIOMED2_GENO_TRBD2[!grepl("hem", BIOMED2_GENO_TRBD2$SUBJECT),]
@@ -234,5 +235,5 @@ g <- grid.arrange(
 )
 
 ggsave(paste0(figure_folder, "D2_ERROR_AND_J1_6_RELATION.pdf"), g, width = 10, height = 8)
-# ggsave(paste0(figure_folder, "D2_ERROR_AND_J1_6_RELATION.png"), g, width = 10, height = 8)
+ggsave(paste0(figure_folder, "D2_ERROR_AND_J1_6_RELATION.png"), g, width = 10, height = 8)
 

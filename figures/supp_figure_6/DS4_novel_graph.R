@@ -438,9 +438,18 @@ leg_plot <- leg_plot + annotate("segment",
 g <- grid.arrange(grobs = list(low_freq_novel_plot, high_freq_novel_plot, leg_plot, shape_legend),
                   ylab = "Undocumented pattern alleles",
                   layout_matrix = rbind(c(1,1,1,NA),
+                                        c(1,1,1,NA),
+                                        c(1,1,1,NA),
                                         c(1,1,1,4),
+                                        c(1,1,1,4),
+                                        c(1,1,1,NA),
                                         c(1,1,1,3),
+                                        c(1,1,1,3),
+                                        c(1,1,1,NA),
+                                        c(1,1,1,NA),
+                                        c(2,2,2,NA),
+                                        c(2,2,2,NA),
                                         c(2,2,2,NA)))
 
 ggsave(paste0(figure_folder, "novel_DS4.pdf"),g, height = 8, width = 16)
-
+ggsave(paste0(figure_folder, "novel_DS4.png"),g, height = 8, width = 16)

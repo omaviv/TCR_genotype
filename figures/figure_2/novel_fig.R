@@ -23,7 +23,8 @@ load(paste0(project_folder, "pipeline/sysdata.rda"))
 hcv_genotypes <- read.delim(paste0(required_files_folder, "HCV_Genotypes_const_2.tab"), header = T, sep = "\t", stringsAsFactors = F)
 sc_genotypes <- read.delim(paste0(required_files_folder, "Single_cell_TR_Genotypes.tab"), header = T, sep = "\t", stringsAsFactors = F)
 biomed_genotypes <- read.delim(paste0(required_files_folder, "BIOMED2_All_Genotypes.tab"), header = T, sep = "\t", stringsAsFactors = F)
-adaptive_genotypes <- read.delim(paste0(required_files_folder, "Adaptive_All_Genotypes.tab"), header = T, sep = "\t", stringsAsFactors = F)
+names(biomed_genotypes) <- toupper(names(biomed_genotypes))
+adaptive_genotypes <- read.delim(paste0(required_files_folder, "DS4_All_Genotypes.tab"), header = T, sep = "\t", stringsAsFactors = F)
 
 full_novel_appearance_df <- read.delim(paste0(required_files_folder, "DS1_DS2_all_novel_occurrences.tab"), header = T, sep = "\t", stringsAsFactors = F)
 
@@ -367,6 +368,8 @@ ds1_ds2_graph <- grid.arrange(p1.common.y, p2.common.y, ncol=2, widths=c(0.75,0.
 ds1_ds2_graph <- grid.arrange(grobs = list(ds1_ds2_graph, leg_plot, shape_legend), layout_matrix = rbind(c(1,1,1,1,1,3),
                                                                                  c(1,1,1,1,1,2),
                                                                                  c(1,1,1,1,1,NA)))
+
+ggsave(paste0(figure_folder, "Undocumented.png"), plot = ds1_ds2_graph, width = 20, height = 14)
 
 
 

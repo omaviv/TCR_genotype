@@ -40,9 +40,17 @@ max_snp_position <- 316
 # undocumented_alleles_2_ignore <- c()
 undocumented_alleles_2_ignore <- c("TRBV13*01_A170T", "TRBV13*01_T158C", "TRBV10-3*02_C225G", "TRBV20-1*01_C142A", "TRBV30*01_A113C", "TRBV6-6*01_C261T",
                                    "TRBV7-9*05_A19G_C256T",
-                                   # "TRBV15*bp02_A316C", "TRBV5-4*bp01_C159T", "TRBV6-6*bp03_G216C", "TRBV6-6*bp03_T201C_A202C_G216C", "TRBV6-6*bp03_T231C_C261T",
-                                   # "TRBV15*bp02_G153T", "TRBV19*bp01_T310C_G311C_C314T", "TRBV5-4*bp01_G205A", "TRBV5-5*bp01_G232A", 
-                                   "TRBV20-1*ap02_T310G", "TRBV7-8*ap01_T295C", "TRBV7-4*ap01_G291C_A297G", "TRBV7-4*ap01_G291C_A297G_C314T", "TRBV7-9*ap01_G313T")
+                                   "TRBV15*bp02_A316C", "TRBV5-4*bp01_C159T", "TRBV6-6*bp03_G216C", "TRBV6-6*bp03_T201C_A202C_G216C", "TRBV6-6*bp03_T231C_C261T",
+                                   "TRBV15*bp02_G153T", "TRBV19*bp01_T310C_G311C_C314T", "TRBV5-4*bp01_G205A", "TRBV5-5*bp01_G232A", 
+                                   "TRBV7-9*bp04_T312A", "TRBV6-6*bp01_C261T", "TRBV10-2*bp01_C214T", 
+                                   "TRBV30*bp01_T316G", "TRBV19*bp01_G313T_C315T_A316C", "TRBV5-6*bp01_C223G", "TRBV6-1*bp01_C278A", "TRBV15*bp02_C147A", 
+                                   "TRBV18*bp01_G289A", "TRBV11-1*bp01_A164G", "TRBV30*bp01_C168A", "TRBV10-2*bp02_C154A", "TRBV10-1*bp01_C284G", 
+                                   "TRBV7-9*bp01_T312C", "TRBV19*bp01_C293T_G294A", "TRBV15*bp02_G275A", "TRBV27*bp01_A155C", "TRBV30*bp01_G169A",
+                                   "TRBV5-6*bp01_G233C_A236G", "TRBV11-2*bp01_A238T", "TRBV10-1*bp02_G156A_G274T", "TRBV24-1*bp01_A316C",
+                                   "TRBV10-1*bp01_C190A_C195T_A199G", "TRBV5-5*bp01_T284G_G303C", "TRBV6-9*bp01_G155T_C156G_A303G", "TRBV7-4*bp01_T306C_C307T",
+                                   "TRBV10-1*bp01_G274T", 
+                                   "TRBV20-1*ap02_T310G", "TRBV7-8*ap01_T295C", "TRBV7-4*ap01_G291C_A297G", "TRBV7-4*ap01_G291C_A297G_C314T", "TRBV7-9*ap01_G313T",
+                                   "TRBV4-3*ap01_A305C_T306C", "TRBV4-3*ap01_A305C_T306C_T308C", "TRBV4-3*ap01_G311C_G313C", "TRBV4-3*ap01_T308C_G311C", "TRBV4-3*ap01_T308C_T310C_G311C")
 
 ######################## Environment & tools 
 # In case of necessity for loading IgBlast environment before run IgBlast, 
@@ -279,13 +287,13 @@ pathname = paste0(output_path,"/", SAMP)
 igblast_output <- paste0(output_path, "/igblast/",SAMP,".fmt7")
 makedb_output <- paste0(makedb_out_dir, SAMP, ".tab")
 
-system(paste(load_ig_environment, igblastn_path,"-germline_db_V", germline_db_V,
-             "-germline_db_D", germline_db_D, "-germline_db_J", germline_db_J, igblast_constant_args,
-             "-query", igblast_input, "-out", igblast_output,
-             "-num_alignments_V 1", "-num_alignments_D 1", "-num_alignments_J 1"))
-
-print("RUNNING MAKEDB ON THE FIRST IGBLAST OUTPUT")
-system(paste(makedb_com, "-i", igblast_output, "-s", igblast_input, '-r', tcrb_repo, "-o", makedb_output))
+# system(paste(load_ig_environment, igblastn_path,"-germline_db_V", germline_db_V,
+#              "-germline_db_D", germline_db_D, "-germline_db_J", germline_db_J, igblast_constant_args,
+#              "-query", igblast_input, "-out", igblast_output,
+#              "-num_alignments_V 1", "-num_alignments_D 1", "-num_alignments_J 1"))
+# 
+# print("RUNNING MAKEDB ON THE FIRST IGBLAST OUTPUT")
+# system(paste(makedb_com, "-i", igblast_output, "-s", igblast_input, '-r', tcrb_repo, "-o", makedb_output))
 
 ############################################## READ DATA ####################################################################
 
@@ -1095,9 +1103,6 @@ if (hetero_d2) {
   hetero_d2 <- grepl(",", geno$GENOTYPED_ALLELES[geno$gene == "TRBD2"])
 }
 
-if (!((hetero_j16) | (hetero_d2))) {
-  quit()
-}
 
 DATA <- read.delim(personal_makedb_output, header=T, sep = "\t", stringsAsFactors = F)
 DATA$subject <- SAMP
@@ -1194,3 +1199,40 @@ if (hetero_d2) {
     write.table(haplo_d2, file = paste0(sample_path, SAMP, "_haplo_D2.tab"), quote = F, row.names = F, sep = "\t")
   }
 }
+
+  
+novel_germ <- TRBV_GERM[grepl("_", names(TRBV_GERM))]
+if (length(novel_germ) > 0) {
+  novel_file <- paste0(sample_path, "only_novel_repo.fasta")
+  write.fasta(sequences=as.list(novel_germ), names=names(novel_germ), novel_file,open="w")
+} else {
+  novel_file <- "-"
+}
+  
+DATA <- read.delim(personal_makedb_output, header=T, sep = "\t", stringsAsFactors = F)
+DATA$v_call_genotyped <- DATA$v_call
+write.table(DATA, file = personal_makedb_output, quote = F, row.names = F, sep = "\t")
+
+hap_gene <- "NA"
+if (hetero_j16) {
+  hap_gene <- "TRBJ1-6"
+} else if (hetero_d2) {
+  hap_gene <- "TRBD2"
+}
+
+setwd(sample_path)
+ogrdbstats::generate_ogrdb_report(
+  personal_repo,	# all the genotype reference
+  novel_file, # only novel allele sequences
+  "Homosapiens",
+  personal_makedb_output, # final genotype reporetoire table
+  "TRBV", # the chain
+  hap_gene, # the gene to ckeck haplotype
+  "V", # the segment
+  "B", # the chain
+   F
+)
+
+
+print("Done!")
+
