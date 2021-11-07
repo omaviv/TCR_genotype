@@ -56,19 +56,19 @@ undocumented_alleles_2_ignore <- c("TRBV13*01_A170T", "TRBV13*01_T158C", "TRBV10
 # In case of necessity for loading IgBlast environment before run IgBlast, 
 # you should write the command of loading the environment at the beggining with ';' follow after it.
 #For example:
-load_ig_environment <- "export IGDATA=/home/bcrlab/eitan/data/igblast/; LD_LIBRARY_PATH=/private/anaconda3/lib nice -19"
+load_ig_environment <- ""
 
 # IgBlast path. In case that igblast can run simply by igblastn command it could be just "igblastn"
-igblastn_path <- "/private/tools/igblast/ncbi-igblast-1.16.0/bin/igblastn"
+igblastn_path <- "igblastn"
 
 # Igdiscover environment
-igdiscover_env <- "source activate /home/bcrlab/peresay/.conda/envs/igdiscover"
+igdiscover_env <- ""
 
 # the path for makeblastdb tool
-makeblastdb_path <- "/private/tools/makeblastdb"
+makeblastdb_path <- "makeblastdb"
 
 # MAKEDB comand (nice -19 for lowering the priority)
-makedb_com <- "nice -19 MakeDb.py"
+makedb_com <- "MakeDb.py"
 makedb_com <- paste0(makedb_com, " igblast")
 
 ################################ Germline refernces #########################################################
@@ -287,13 +287,13 @@ pathname = paste0(output_path,"/", SAMP)
 igblast_output <- paste0(output_path, "/igblast/",SAMP,".fmt7")
 makedb_output <- paste0(makedb_out_dir, SAMP, ".tab")
 
-# system(paste(load_ig_environment, igblastn_path,"-germline_db_V", germline_db_V,
-#              "-germline_db_D", germline_db_D, "-germline_db_J", germline_db_J, igblast_constant_args,
-#              "-query", igblast_input, "-out", igblast_output,
-#              "-num_alignments_V 1", "-num_alignments_D 1", "-num_alignments_J 1"))
-# 
-# print("RUNNING MAKEDB ON THE FIRST IGBLAST OUTPUT")
-# system(paste(makedb_com, "-i", igblast_output, "-s", igblast_input, '-r', tcrb_repo, "-o", makedb_output))
+system(paste(load_ig_environment, igblastn_path,"-germline_db_V", germline_db_V,
+             "-germline_db_D", germline_db_D, "-germline_db_J", germline_db_J, igblast_constant_args,
+             "-query", igblast_input, "-out", igblast_output,
+             "-num_alignments_V 1", "-num_alignments_D 1", "-num_alignments_J 1"))
+
+print("RUNNING MAKEDB ON THE FIRST IGBLAST OUTPUT")
+system(paste(makedb_com, "-i", igblast_output, "-s", igblast_input, '-r', tcrb_repo, "-o", makedb_output))
 
 ############################################## READ DATA ####################################################################
 
