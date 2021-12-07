@@ -5,7 +5,7 @@
 2. makeblastdb tool
 3. MakeDb tool
 4. R and the following R packages: seqinr, tigger, optparse, gtools, ggplot2, stringr, dplyr, data.table, alakazam, and reshape2
-5. The fasta file refernces of the 3 segments: TRBV, TRBD, and TRBJ in IMGT format (gapped sequences). (the references can be found in the "Script_references" folder)
+5. The fasta file refernces of the 3 segments: TRBV, TRBD, and TRBJ in IMGT format (gapped sequences). (the references can be found in the "fasta_references" folder)
 6. Blast databases for germline TRBV, TRBD, and TRBJ sequences as describde over IgBlast set up: https://ncbi.github.io/igblast/cook/How-to-set-up.html (the references can be found in the "makeblastdb_references" folder)
 
 ## Initialize
